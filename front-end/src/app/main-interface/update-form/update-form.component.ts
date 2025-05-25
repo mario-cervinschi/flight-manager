@@ -1,5 +1,5 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { Flight } from '../../model/flight';
 import { FormInputComponent } from "../form-input/form-input.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
@@ -9,12 +9,13 @@ declare var bootstrap: any;
 
 @Component({
   selector: 'app-update-form',
-  imports: [CommonModule, ReactiveFormsModule],
+  imports: [CommonModule, ReactiveFormsModule, FormInputComponent],
   templateUrl: './update-form.component.html',
   styleUrl: './update-form.component.css'
 })
 export class UpdateFormComponent {
   @Input() flight!: Flight;
+  @ViewChild(FormInputComponent) formInput!: FormInputComponent;
 
   fg = new FormGroup({
     destinationForm: new FormControl('', Validators.required),
@@ -28,6 +29,7 @@ export class UpdateFormComponent {
   constructor(private service: ServicesService){}
 
   openModal(): void {
+    
     this.visible = true;
   }
 
@@ -36,22 +38,8 @@ export class UpdateFormComponent {
   }
 
   submitUpdate(): void {
-    if(this.fg.valid){
-      const newFlight = {
-        id: this.flight.id,
-        destination: this.fg.get('destinationForm')?.value || '',
-        timeOfDeparture: this.fg.get('dateForm')?.value || '',
-        airportName: this.fg.get('airportNameForm')?.value || '',
-        availableSeats: Number(this.fg.get('seatNumbersForm')?.value)
-      };
-
-      this.service.updateFlight(newFlight).subscribe((fl : Flight) => {
-        this.fg.reset(); this.service.notifyFlightUpdated(fl);
-      })
-    this.close();
-    }
-    else{
-      this.fg.markAllAsTouched();
+    if(this.formInput.handleUpdate(this.flight)){
+      this.close();
     }
   }
 }

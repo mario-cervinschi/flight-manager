@@ -11,9 +11,11 @@ import { UpdateFormComponent } from './update-form/update-form.component';
   styleUrl: './main-interface.component.css'
 })
 export class MainInterfaceComponent implements OnInit{
+
   flights: Flight[] = [];
 
   @ViewChild('updateForm') updateFormComponent!: UpdateFormComponent;
+  @ViewChild(FormInputComponent) formInput! : FormInputComponent;
 
   constructor(private service: ServicesService){
   }
@@ -50,6 +52,10 @@ export class MainInterfaceComponent implements OnInit{
     this.service.deleteFlight(flightId).subscribe(() => {
       this.refreshFlightsList();
     });
+  }
+
+  handleSubmit(){
+    this.formInput.handleSubmit();
   }
 
   handleUpdate(flight: Flight): void{
