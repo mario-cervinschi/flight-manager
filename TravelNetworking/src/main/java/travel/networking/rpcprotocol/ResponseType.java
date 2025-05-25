@@ -1,0 +1,5 @@
+package travel.networking.rpcprotocol;
+
+public enum ResponseType {
+    OK, ERROR, GET_AGENCY_BY_LOGIN, NEW_AGENCY, GET_ALL_FLIGHTS, GET_ALL_FLIGHTS_DESTINATION_DATE, UPDATE_FLIGHT, NEW_TICKET, ADD_TICKET_SUCCESS;
+}

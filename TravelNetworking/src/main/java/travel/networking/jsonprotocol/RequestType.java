@@ -1,0 +1,12 @@
+package travel.networking.jsonprotocol;
+
+public enum RequestType {
+    LOGIN,
+    LOGOUT,
+    GET_AGENCY_BY_LOGIN,
+    SAVE_AGENCY,
+    GET_ALL_FLIGHTS,
+    GET_ALL_FLIGHTS_DESTINATION_DATE,
+    UPDATE_FLIGHT,
+    ADD_TICKET
+}

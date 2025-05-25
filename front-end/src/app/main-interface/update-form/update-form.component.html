@@ -1,0 +1,137 @@
+<!-- <div
+  class="modal fade"
+  id="updateModal"
+  tabindex="-1"
+  aria-labelledby="updateModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Flight</h5>
+        <button
+          type="button"
+          class="btn-close"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body">
+        <p>Updating flight with ID: {{ flightId }}</p>
+        <button class="btn btn-success" (click)="submitUpdate()">Save</button>
+      </div>
+    </div>
+  </div>
+</div> -->
+
+<!-- Simple modal wrapper -->
+<!-- <div class="modal-backdrop" *ngIf="visible" (click)="close()"></div> -->
+
+<div *ngIf="visible">
+  <!-- Backdrop -->
+  <div class="modal-backdrop" (click)="close()"></div>
+
+  <!-- Modal Content -->
+  <div class="custom-modal" (click)="$event.stopPropagation()">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Update Flight</h5>
+        <button
+          type="button"
+          class="btn-close"
+          (click)="close()"
+          aria-label="Close"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="modal-body">
+        <p>Updating flight with ID: {{ flight.id }}</p>
+        <!-- Your form inputs here -->
+        <form class="d-flex" [formGroup]="fg">
+          <div class="col">
+            <div class="">
+              <label for="" class="form-label">Destination</label>
+              <input
+                type="text"
+                class="form-control"
+                aria-describedby="helpId"
+                formControlName="destinationForm"
+              />
+              @if (this.fg.get('destinationForm')?.invalid &&
+              (this.fg.get('destinationForm')?.dirty ||
+              this.fg.get('destinationForm')?.touched)) {
+              <small id="helpId" class="form-text text-danger"
+                >Field is required.</small
+              >
+              }
+            </div>
+            <div class="">
+              <label for="" class="form-label">Airport Name</label>
+              <input
+                type="text"
+                class="form-control"
+                formControlName="airportNameForm"
+                aria-describedby="helpId"
+              />
+              @if (this.fg.get('airportNameForm')?.invalid &&
+              (this.fg.get('airportNameForm')?.dirty ||
+              this.fg.get('airportNameForm')?.touched)) {
+              <small id="helpId" class="form-text text-danger"
+                >Field is required.</small
+              >
+              }
+            </div>
+            <div class="row">
+              <div class="mb-3 col">
+                <label for="datePicker" class="form-label">Select a date</label>
+                <input
+                  type="datetime-local"
+                  class="form-control"
+                  formControlName="dateForm"
+                  id="datePicker"
+                  name="date"
+                />
+                @if (this.fg.get('dateForm')?.invalid &&
+                (this.fg.get('dateForm')?.dirty ||
+                this.fg.get('dateForm')?.touched)) {
+                <small id="helpId" class="form-text text-danger"
+                  >Field is required.</small
+                >
+                }
+              </div>
+              <div class="mb-3 col">
+                <label for="seatNumbers" class="form-label"
+                  >Number of seats</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  aria-describedby="helpId"
+                  formControlName="seatNumbersForm"
+                />
+                @if (this.fg.get('seatNumbersForm')?.invalid &&
+                (this.fg.get('seatNumbersForm')?.dirty ||
+                this.fg.get('seatNumbersForm')?.touched)) {
+                <small id="helpId" class="form-text text-danger"
+                  >Field is required.</small
+                >
+                }
+              </div>
+            </div>
+          </div>
+        </form>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="close()">
+          Close
+        </button>
+        <button type="button" class="btn btn-primary" (click)="submitUpdate()">
+          Save Changes
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

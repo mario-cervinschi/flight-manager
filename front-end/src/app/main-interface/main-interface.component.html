@@ -1,0 +1,43 @@
+<div class="container">
+  <h1 class="text-center text-primary mt-3 mb-3">
+    Welcome to flight manager app!
+  </h1>
+
+  <div class="container">
+    <app-form-input></app-form-input>
+  </div>
+
+  <h6 class="text-sm-start text-center text-secondary">
+    List of available flights
+  </h6>
+
+  <ul class="list-group">
+    @for (flight of flights; track flight.id) {
+    <li
+      class="list-group-item d-flex justify-content-between align-items-center"
+    >
+      <span>{{ flight.destination }}</span>
+      <span>{{ flight.timeOfDeparture }}</span>
+      <span>{{ flight.airportName }}</span>
+      <span>{{ flight.availableSeats }}</span>
+      <a
+        name=""
+        id=""
+        class="btn btn-danger"
+        (click)="handleDeletion(flight.id)"
+        role="button"
+        >Delete</a
+      ><a
+        name=""
+        id=""
+        class="btn btn-primary"
+        (click)="handleUpdate(flight)"
+        role="button"
+        >Update</a
+      >
+    </li>
+    }
+  </ul>
+
+  <app-update-form #updateForm></app-update-form>
+</div>
