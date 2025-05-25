@@ -17,13 +17,6 @@ export class UpdateFormComponent {
   @Input() flight!: Flight;
   @ViewChild(FormInputComponent) formInput!: FormInputComponent;
 
-  fg = new FormGroup({
-    destinationForm: new FormControl('', Validators.required),
-    airportNameForm: new FormControl('', Validators.required),
-    dateForm: new FormControl('', Validators.required),
-    seatNumbersForm: new FormControl('', [Validators.required, Validators.min(1)])
-  })
-
   visible = false;
 
   constructor(private service: ServicesService){}
@@ -38,8 +31,19 @@ export class UpdateFormComponent {
   }
 
   submitUpdate(): void {
-    if(this.formInput.handleUpdate(this.flight)){
-      this.close();
+    const fg = this.formInput.retrieveFormData();
+    if(fg !== null){
+      const newFlight = {
+        id: this.flight.id,
+        destination: fg.get('destinationForm')?.value || '',
+        timeOfDeparture: fg.get('dateForm')?.value || '',
+        airportName: fg.get('airportNameForm')?.value || '',
+        availableSeats: Number(fg.get('seatNumbersForm')?.value)
+      };
+
+      this.service.updateFlight(newFlight).subscribe((fl : Flight) => {
+        fg.reset(); this.service.notifyFlightUpdated(fl);
+      })
     }
   }
 }

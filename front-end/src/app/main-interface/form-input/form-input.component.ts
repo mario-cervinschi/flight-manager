@@ -19,41 +19,13 @@ export class FormInputComponent {
 
   constructor(private service: ServicesService){}
 
-  handleUpdate(flight: Flight) : boolean{
-    if(this.fg.valid){
-      const newFlight = {
-        id: flight.id,
-        destination: this.fg.get('destinationForm')?.value || '',
-        timeOfDeparture: this.fg.get('dateForm')?.value || '',
-        airportName: this.fg.get('airportNameForm')?.value || '',
-        availableSeats: Number(this.fg.get('seatNumbersForm')?.value)
-      };
-
-      this.service.updateFlight(newFlight).subscribe((fl : Flight) => {
-        this.fg.reset(); this.service.notifyFlightUpdated(fl);
-      })
-      return true;
-    }
-    else{
-      this.fg.markAllAsTouched();
-      return false;
-    }
-  }
-
-  handleSubmit(){
+  retrieveFormData() : FormGroup | null{
     this.fg.markAllAsTouched();
 
     if(this.fg.valid){
-      const newFlight = {
-        destination: this.fg.get('destinationForm')?.value || '',
-        timeOfDeparture: this.fg.get('dateForm')?.value || '',
-        airportName: this.fg.get('airportNameForm')?.value || '',
-        availableSeats: Number(this.fg.get('seatNumbersForm')?.value)
-      };
-
-      this.service.addFlight(newFlight).subscribe((fl : Flight) => {
-        this.fg.reset(); this.service.notifyFlightAdded(fl)
-      })
+      return this.fg;
+    }else{
+      return null;
     }
   }
 }

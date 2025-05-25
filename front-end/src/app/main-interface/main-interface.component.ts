@@ -55,7 +55,19 @@ export class MainInterfaceComponent implements OnInit{
   }
 
   handleSubmit(){
-    this.formInput.handleSubmit();
+    const fg : any = this.formInput.retrieveFormData();
+    if (fg !== null){
+      const newFlight = {
+      destination: fg.get('destinationForm')?.value || '',
+      timeOfDeparture: fg.get('dateForm')?.value || '',
+      airportName: fg.get('airportNameForm')?.value || '',
+      availableSeats: Number(fg.get('seatNumbersForm')?.value)
+    };
+
+      this.service.addFlight(newFlight).subscribe((fl : Flight) => {
+        fg.reset(); this.service.notifyFlightAdded(fl)
+      })
+    }  
   }
 
   handleUpdate(flight: Flight): void{
