@@ -1,5 +1,6 @@
 package TravelAgency.rest;
 
+import TravelAgency.notification.FlightNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,9 @@ import java.util.List;
 public class FlightController {
     @Autowired
     private IFlightRepository flightRepository;
+
+    @Autowired
+    private FlightNotificationService flightNotificationService;
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(value="name", defaultValue = "World") String name) {
@@ -54,6 +58,7 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
         try {
             Flight savedFlight = flightRepository.save(flight).orElse(null);
+            notifyChanges();
             return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,6 +73,7 @@ public class FlightController {
                 // Setează ID-ul pentru a ne asigura că actualizăm înregistrarea corectă
                 flight.setId(id);
                 Flight updatedFlight = flightRepository.update(flight).orElse(null);
+                notifyChanges();
                 return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -83,6 +89,7 @@ public class FlightController {
             Flight existingFlight = flightRepository.findOne(id).orElse(null);
             if (existingFlight != null) {
                 flightRepository.delete(id);
+                notifyChanges();
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -90,6 +97,16 @@ public class FlightController {
         } catch (Exception e) {
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    private void notifyChanges(){
+        List<Flight> flightList = new ArrayList<>();
+        flightRepository.findAll().forEach(flightList::add);
+
+        // Conversie în array
+        Flight[] flights = flightList.toArray(new Flight[0]);
+
+        flightNotificationService.flightsUpdated(flights);
     }
 
 }

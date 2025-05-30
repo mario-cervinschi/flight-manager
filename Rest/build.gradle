@@ -15,21 +15,17 @@ dependencies {
     implementation project (':TravelModel')
     implementation project (':TravelPersistance')
 
-    // Spring Boot dependencies cu logging inclus
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-actuator'
-
-    // Exclude log4j din alte dependențe pentru a evita conflictele
-    configurations.all {
-        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
-    }
-
     // Configurare Log4j2 pentru Spring Boot
-    implementation 'org.springframework.boot:spring-boot-starter-log4j2'
 
-    // Jackson dependencies
-    implementation 'com.fasterxml.jackson.core:jackson-annotations:2.15.0'
-    implementation 'com.fasterxml.jackson.core:jackson-core:2.15.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+    implementation 'org.springframework.boot:spring-boot-starter-websocket:3.4.5'
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation 'com.google.code.gson:gson:2.13.1'
+    testImplementation('com.jayway.jsonpath:json-path')
+    testImplementation platform('org.junit:junit-bom:5.10.0')
+    testImplementation 'org.junit.jupiter:junit-jupiter'
 
     // SQLite
     runtimeOnly 'org.xerial:sqlite-jdbc:3.34.0'
