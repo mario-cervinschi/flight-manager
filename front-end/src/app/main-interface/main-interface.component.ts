@@ -1,8 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Flight } from '../model/flight';
-import { ServicesService } from '../services.service';
+import { ServicesService } from '../../shared/services.service';
 import { FormInputComponent } from './form-input/form-input.component';
 import { UpdateFormComponent } from './update-form/update-form.component';
+import { Subscription } from 'rxjs';
+import { FlightTableWebsocketService } from '../../shared/flight-table-websocket.service';
 
 @Component({
   selector: 'app-main-interface',
@@ -13,15 +15,23 @@ import { UpdateFormComponent } from './update-form/update-form.component';
 export class MainInterfaceComponent implements OnInit{
 
   flights: Flight[] = [];
+  private wsSubscription?: Subscription;
 
   @ViewChild('updateForm') updateFormComponent!: UpdateFormComponent;
   @ViewChild(FormInputComponent) formInput! : FormInputComponent;
 
-  constructor(private service: ServicesService){
+  constructor(private service: ServicesService, private flightWsService: FlightTableWebsocketService){
   }
 
   ngOnInit(): void {
     this.refreshFlightsList();
+
+    this.flightWsService.connect();
+
+    this.wsSubscription = this.flightWsService.flights$.subscribe(flights => {
+      this.flights = flights;  
+      console.log('Received flights update from WebSocket:', flights);
+    });
 
     this.service.flightAdded.subscribe((newFlight: Flight) => {
       this.flights.push(newFlight);
