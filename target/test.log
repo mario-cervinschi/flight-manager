@@ -1,2 +1,0 @@
-06 Apr 2025 21:50:32,095 INFO  StartRpcServer 26 main - Server properties set {travel.server.port=55556, travel.jdbc.driver=org.sqlite.JDBC, travel.jdbc.url=jdbc:sqlite:D:/UBB/semestrul 4/MPP/UML P1/turism.db}
-06 Apr 2025 21:50:32,104 DEBUG StartRpcServer 45 main - Starting server on port: 55556

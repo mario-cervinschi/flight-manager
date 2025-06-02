@@ -1,0 +1,6 @@
+rootProject.name = 'flightapp'
+include 'controller'
+include 'model'
+include 'repository'
+include 'services'
+
