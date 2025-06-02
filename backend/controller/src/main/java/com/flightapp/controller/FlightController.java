@@ -65,7 +65,6 @@ public class FlightController {
         try {
             Flight existingFlight = flightService.getFlightById(id).orElse(null);
             if (existingFlight != null) {
-                // Setează ID-ul pentru a ne asigura că actualizăm înregistrarea corectă
                 flight.setId(id);
                 Flight updatedFlight = flightService.updateFlight(flight);
                 return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
