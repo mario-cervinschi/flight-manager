@@ -2,7 +2,7 @@ package com.flightapp.controller;
 
 import com.flightapp.model.Flight;
 import com.flightapp.services.FlightService;
-import com.flightapp.utils.notification.FlightNotificationService;
+import com.flightapp.utils.websocket.notification.FlightNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

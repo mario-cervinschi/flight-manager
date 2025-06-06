@@ -1,4 +1,4 @@
-package com.flightapp.utils.websockets;
+package com.flightapp.utils.websocket.websockets;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

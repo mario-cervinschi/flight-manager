@@ -1,4 +1,4 @@
-package com.flightapp.utils.notification;
+package com.flightapp.utils.websocket.notification;
 
 import com.flightapp.model.Flight;
 

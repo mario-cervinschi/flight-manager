@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Flight } from './model/flight';
+import { Flight } from '../app/model/flight';
 import { Observable, Subject } from 'rxjs';
 
 @Injectable({

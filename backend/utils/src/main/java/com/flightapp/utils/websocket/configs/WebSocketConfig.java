@@ -1,7 +1,7 @@
-package com.flightapp.utils.configs;
+package com.flightapp.utils.websocket.configs;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.flightapp.utils.websockets.FlightWebsocketHandler;
+import com.flightapp.utils.websocket.websockets.FlightWebsocketHandler;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.socket.config.annotation.EnableWebSocket;
