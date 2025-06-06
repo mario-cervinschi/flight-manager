@@ -2,6 +2,7 @@ package com.flightapp.controller;
 
 import com.flightapp.model.Flight;
 import com.flightapp.services.FlightService;
+import com.flightapp.utils.notification.FlightNotificationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,16 @@ import java.util.List;
 public class FlightController {
     @Autowired
     private FlightService flightService;
+
+    @Autowired
+    private FlightNotificationService flightNotificationService;
+
+
+    public FlightController(FlightService flightService,
+                            FlightNotificationService flightNotificationService) {
+        this.flightService = flightService;
+        this.flightNotificationService = flightNotificationService;
+    }
 
     @GetMapping("/greeting")
     public String greeting(@RequestParam(value="name", defaultValue = "World") String name) {
@@ -54,6 +65,7 @@ public class FlightController {
     public ResponseEntity<Flight> createFlight(@RequestBody Flight flight) {
         try {
             Flight savedFlight = flightService.saveFlight(flight);
+            notifyChanges();
             return new ResponseEntity<>(savedFlight, HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
@@ -67,6 +79,7 @@ public class FlightController {
             if (existingFlight != null) {
                 flight.setId(id);
                 Flight updatedFlight = flightService.updateFlight(flight);
+                notifyChanges();
                 return new ResponseEntity<>(updatedFlight, HttpStatus.OK);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -82,6 +95,7 @@ public class FlightController {
             Flight existingFlight = flightService.getFlightById(id).orElse(null);
             if (existingFlight != null) {
                 flightService.deleteFlight(id);
+                notifyChanges();
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             } else {
                 return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -91,4 +105,11 @@ public class FlightController {
         }
     }
 
+    private void notifyChanges(){
+        List<Flight> flightList = new ArrayList<>(flightService.getAllFlights());
+
+        Flight[] flights = flightList.toArray(new Flight[0]);
+
+        flightNotificationService.flightsUpdated(flights);
+    }
 }
