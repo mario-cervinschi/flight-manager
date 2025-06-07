@@ -1,33 +1,26 @@
 plugins {
     id 'java'
+    id 'org.springframework.boot' version '3.5.0'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
-group = 'com'
-version = '0.0.1-SNAPSHOT'
-
-repositories {
-    mavenCentral()
-}
-
-java {
-    toolchain {
-        languageVersion = JavaLanguageVersion.of(17)
-    }
-}
-
-dependencies{
+dependencies {
     implementation project(':model')
-    implementation project (':services')
+    implementation project(':services')
+    implementation project(':utils')
+    implementation project(':repository')
 
-    implementation 'org.springframework.boot:spring-boot-starter-web:3.5.0'
-
+    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.postgresql:postgresql:42.7.2'
 
-    testImplementation platform('org.junit:junit-bom:5.10.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 
-test {
+tasks.named('test') {
     useJUnitPlatform()
 }
