@@ -1,10 +1,10 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { Flight } from '../model/flight';
-import { ServicesService } from '../../shared/services.service';
+import { ServicesService } from '../shared/services.service';
 import { FormInputComponent } from './form-input/form-input.component';
 import { UpdateFormComponent } from './update-form/update-form.component';
 import { Subscription } from 'rxjs';
-import { FlightTableWebsocketService } from '../../shared/flight-table-websocket.service';
+import { FlightTableWebsocketService } from '../shared/flight-table-websocket.service';
 
 @Component({
   selector: 'app-main-interface',
@@ -34,7 +34,7 @@ export class MainInterfaceComponent implements OnInit{
     });
 
     this.service.flightAdded.subscribe((newFlight: Flight) => {
-      this.flights.push(newFlight);
+      // this.flights.push(newFlight);
     })
 
     this.service.flightUpdated.subscribe((updatedFlight: Flight) => {

@@ -1,14 +1,14 @@
-<div class="container">
-  <h1 class="text-center text-primary mt-3 mb-3">
+<div class="max-w-6xl mx-auto px-4">
+  <h1 class="text-center text-blue-600 mt-6 mb-6 text-3xl font-bold">
     Welcome to flight manager app!
   </h1>
 
-  <div class="container">
+  <div class="max-w-4xl mx-auto">
     <app-form-input></app-form-input>
     <div class="text-center">
       <button
         type="submit"
-        class="btn btn-primary w-50 mb-4"
+        class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded w-1/2 mb-4 transition duration-200"
         (click)="$event.preventDefault(); handleSubmit()"
       >
         Add flight
@@ -16,34 +16,33 @@
     </div>
   </div>
 
-  <h6 class="text-sm-start text-center text-secondary">
+  <h6 class="text-left md:text-center text-gray-600 text-sm mb-4">
     List of available flights
   </h6>
 
-  <ul class="list-group">
+  <ul class="space-y-2">
     @for (flight of flights; track flight.id) {
-    <li
-      class="list-group-item d-flex justify-content-between align-items-center"
-    >
-      <span>{{ flight.destination }}</span>
-      <span>{{ flight.timeOfDeparture }}</span>
-      <span>{{ flight.airportName }}</span>
-      <span>{{ flight.availableSeats }}</span>
-      <a
-        name=""
-        id=""
-        class="btn btn-danger"
-        (click)="handleDeletion(flight.id)"
-        role="button"
-        >Delete</a
-      ><a
-        name=""
-        id=""
-        class="btn btn-primary"
-        (click)="handleUpdate(flight)"
-        role="button"
-        >Update</a
-      >
+    <li class="bg-white border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 shadow-sm">
+      <div class="flex flex-col sm:flex-row sm:gap-4 flex-grow">
+        <span class="font-medium">{{ flight.destination }}</span>
+        <span class="text-gray-600">{{ flight.timeOfDeparture }}</span>
+        <span class="text-gray-600">{{ flight.airportName }}</span>
+        <span class="text-gray-600">{{ flight.availableSeats }} seats</span>
+      </div>
+      <div class="flex gap-2">
+        <button
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-200"
+          (click)="handleDeletion(flight.id)"
+        >
+          Delete
+        </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-200"
+          (click)="handleUpdate(flight)"
+        >
+          Update
+        </button>
+      </div>
     </li>
     }
   </ul>

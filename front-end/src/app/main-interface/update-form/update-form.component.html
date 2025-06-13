@@ -6,7 +6,7 @@
   <div class="custom-modal" (click)="$event.stopPropagation()">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Update Flight</h5>
+        <h5 class="text-lg font-medium text-gray-700">Update Flight</h5>
         <button
           type="button"
           class="btn-close"
@@ -18,16 +18,16 @@
       </div>
 
       <div class="modal-body">
-        <p>Updating flight with ID: {{ flight.id }}</p>
+        <p class="text-m font-medium text-gray-700 mb-6">Updating flight with ID: {{ flight.id }}</p>
         <!-- Your form inputs here -->
         <app-form-input></app-form-input>
       </div>
 
       <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="close()">
+        <button type="button" class="bg-red-500 hover:bg-red-700 border rounded-md font-bold text-white p-1.5 transition duration-200" (click)="close()">
           Close
         </button>
-        <button type="button" class="btn btn-primary" (click)="submitUpdate()">
+        <button type="button" class="bg-blue-500 hover:bg-blue-700 border rounded-md font-bold text-white p-1.5 transition duration-200" (click)="submitUpdate()">
           Save Changes
         </button>
       </div>
