@@ -1,0 +1,57 @@
+<div
+  class="lg:mx-44 md:mx-32 sm:mx-16 mx-4 mt-8 px-4 bg-gradient-to-tr from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary rounded-lg group-target:transition-all duration-150"
+>
+  <h1 class="text-center text-gray-100 pt-6 pb-4 text-3xl font-bold">
+    Add Menu
+  </h1>
+
+  <div class="max-w-4xl mx-auto sm:px-16 px-8">
+    <app-form-input></app-form-input>
+    <div class="text-center mt-6">
+      <button
+        type="submit"
+        class="hover:bg-custom-hover-link hover:border-custom-nav-via bg-gray-50 border-custom-secondary-background border-2 rounded-lg hover:text-gray-100 text-emerald-900 font-bold py-2 px-4 w-1/2 mb-4 transition duration-200"
+        (click)="$event.preventDefault(); handleSubmit()"
+      >
+        Add flight
+      </button>
+    </div>
+  </div>
+</div>
+
+<div>
+  <h6 class="text-left md:text-center text-gray-600 text-sm mb-4">
+    List of available flights
+  </h6>
+
+  <ul class="space-y-2">
+    @for (flight of flights; track flight.id) {
+    <li
+      class="bg-white border border-gray-200 rounded-lg p-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-4 shadow-sm"
+    >
+      <div class="flex flex-col sm:flex-row sm:gap-4 flex-grow">
+        <span class="font-medium">{{ flight.destination }}</span>
+        <span class="text-gray-600">{{ flight.timeOfDeparture }}</span>
+        <span class="text-gray-600">{{ flight.airportName }}</span>
+        <span class="text-gray-600">{{ flight.availableSeats }} seats</span>
+      </div>
+      <div class="flex gap-2">
+        <button
+          class="bg-red-500 hover:bg-red-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-200"
+          (click)="handleDeletion(flight.id)"
+        >
+          Delete
+        </button>
+        <button
+          class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-3 rounded text-sm transition duration-200"
+          (click)="handleUpdate(flight)"
+        >
+          Update
+        </button>
+      </div>
+    </li>
+    }
+  </ul>
+
+  <app-update-form #updateForm></app-update-form>
+</div>
