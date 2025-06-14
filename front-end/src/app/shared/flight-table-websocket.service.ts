@@ -13,7 +13,7 @@ export class FlightTableWebsocketService {
   constructor(private ngZone: NgZone) { }
 
   connect() {
-    this.socket = new WebSocket('ws://localhost:8080/chatws');
+    this.socket = new WebSocket('ws://localhost:8080/flightws');
 
     this.socket.onopen = () => {
       console.log('WebSocket connection opened');

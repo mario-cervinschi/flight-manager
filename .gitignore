@@ -1,1 +1,10 @@
+<<<<<<< HEAD
 node_modules
+=======
+.gradle/ 
+.idea/ 
+build/ 
+.angular/ 
+.vscode/ 
+node_modules/ 
+>>>>>>> 0b2d59a3089e9401f0a3dfc53fda8d7eab588bca
