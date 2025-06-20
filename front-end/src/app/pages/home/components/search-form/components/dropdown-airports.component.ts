@@ -1,18 +1,18 @@
-import { Component, Input } from '@angular/core';
-import { Airport } from '../../../../../../model/airport';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Airport } from '../../../../../model/airport';
 
 @Component({
   selector: 'app-dropdown-airports',
   imports: [],
   template: `
-    @if (showDepartureDropdown) {
+    @if (showDropdown) {
         <div
           class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
         >
           @for (airport of airports; track airport.code) {
           <div
             class="px-3 py-2 hover:bg-emerald-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-            (mousedown)="selectDepartureWithDelay(airport)"
+            (mousedown)="selectWithDelay(airport)"
           >
             <div class="font-medium text-gray-900">
               {{ airport.city }} ({{ airport.code }})
@@ -31,18 +31,18 @@ import { Airport } from '../../../../../../model/airport';
   styles: ``
 })
 export class DropdownAirportsComponent {
-  @Input() showDepartureDropdown = false;
+  @Input() showDropdown = false;
   @Input() airports: Airport[] = [];
 
-  selectDeparture(airport: Airport) {
-    this.selectedDeparture = airport;
-    this.departureSearchTerm = '';
-    this.showDepartureDropdown = false;
-    this.fg.get('departureForm')?.setValue(airport.code);
+  @Output() selectedAirport = new EventEmitter<Airport>();
+
+  select(airport: Airport) {
+    this.showDropdown = false;
+    this.selectedAirport.emit(airport);
   }
 
-  selectDepartureWithDelay(airport: Airport) {
-    this.isSelectingDeparture = true;
+  selectWithDelay(airport: Airport) {
+    // this.isSelectingDeparture = true;
   
     let mouseUpDetected = false;
     let timeoutId: any;
@@ -52,9 +52,9 @@ export class DropdownAirportsComponent {
       document.removeEventListener('mouseup', mouseUpListener);
       clearTimeout(timeoutId);
   
-      this.selectDeparture(airport); // selectează doar dacă mouseup-ul e în limita timpului
+      this.select(airport); // selectează doar dacă mouseup-ul e în limita timpului
       setTimeout(() => {
-        this.isSelectingDeparture = false;
+        // this.isSelectingDeparture = false;
       }, 10);
     };
   
@@ -65,7 +65,7 @@ export class DropdownAirportsComponent {
       document.removeEventListener('mouseup', mouseUpListener);
       if (!mouseUpDetected) {
         console.log('Mouse held too long, selection cancelled');
-        this.isSelectingDeparture = false;
+        // this.isSelectingDeparture = false;
       }
     }, 1000); // 3.5 secunde limită
   }

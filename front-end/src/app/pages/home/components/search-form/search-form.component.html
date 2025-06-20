@@ -3,9 +3,10 @@
   [formGroup]="fg"
 >
   <div class="w-full">
-    <!-- Plecare și Destinație -->
+    <!-- Departure and destination -->
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <!-- Plecare -->
+      
+      <!-- DEPARTURE -->
       <div class="relative">
         <label
           class="absolute pl-3 pt-1 text-sm font-medium text-custom-nav-via/80 mb-2 z-10 transition-opacity duration-200"
@@ -23,7 +24,11 @@
                 ? selectedDeparture.city + ' (' + selectedDeparture.code + ')'
                 : 'Departure'
             "
-            [value]="selectedDeparture ? selectedDeparture.city + ' (' + selectedDeparture.code + ')' : departureSearchTerm"
+            [value]="
+              selectedDeparture
+                ? selectedDeparture.city + ' (' + selectedDeparture.code + ')'
+                : departureSearchTerm
+            "
             [class.pt-5]="departureSearchTerm || selectedDeparture"
             [class.pb-1]="departureSearchTerm || selectedDeparture"
             [class.py-3.5]="!departureSearchTerm && !selectedDeparture"
@@ -35,29 +40,12 @@
           />
         </div>
 
-        <!-- Dropdown pentru plecare -->
-        @if (showDepartureDropdown) {
-        <div
-          class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
-        >
-          @for (airport of filteredDepartures; track airport.code) {
-          <div
-            class="px-3 py-2 hover:bg-emerald-50 cursor-pointer border-b border-gray-100 last:border-b-0"
-            (mousedown)="selectDepartureWithDelay(airport)"
-          >
-            <div class="font-medium text-gray-900">
-              {{ airport.city }} ({{ airport.code }})
-            </div>
-            <div class="text-sm text-gray-600">{{ airport.name }}</div>
-            <div class="text-xs text-gray-500">{{ airport.country }}</div>
-          </div>
-          } @empty {
-          <div class="px-3 py-2 text-gray-500 text-center">
-            Nu s-au găsit rezultate
-          </div>
-          }
-        </div>
-        }
+        <!-- Dropdown pt DEPARTURE -->
+        <app-dropdown-airports
+          [showDropdown]="showDepartureDropdown"
+          [airports]="airports"
+          (selectedAirport)="selectDeparture($event)"
+        ></app-dropdown-airports>
 
         <!-- Error message pentru plecare -->
         @if (fg.get('departureForm')?.invalid && (fg.get('departureForm')?.dirty

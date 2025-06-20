@@ -3,10 +3,11 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { ServicesService } from '../../../../shared/services.service';
 import { Airport } from '../../../../model/airport';
 import { NgClass } from '@angular/common';
+import { DropdownAirportsComponent } from './components/dropdown-airports.component';
 
 @Component({
   selector: 'app-search-form',
-  imports: [ReactiveFormsModule, NgClass],
+  imports: [ReactiveFormsModule, NgClass, DropdownAirportsComponent],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.css'
 })
