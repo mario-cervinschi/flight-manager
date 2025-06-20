@@ -1,7 +1,8 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Flight } from '../model/flight';
-import { Observable, Subject } from 'rxjs';
+import { Observable, Subject, firstValueFrom } from 'rxjs';
+import { Airport } from '../model/airport';
 
 @Injectable({
   providedIn: 'root'
@@ -40,6 +41,18 @@ export class ServicesService {
 
   updateFlight(flight: Flight): Observable<Flight>{
     return this.client.put<Flight>(this.SERVER_URL + `/${flight.id}`, flight);
+  }
+
+  async getDestinationAirports(departureCode: string): Promise<Airport[]> {
+    try {
+      const response = await firstValueFrom(
+        this.client.get<Airport[]>(`${this.SERVER_URL}/destinations/${departureCode}`)
+      );
+      return response;
+    } catch (error) {
+      console.error('Error fetching destination airports:', error);
+      throw error;
+    }
   }
 
 }
