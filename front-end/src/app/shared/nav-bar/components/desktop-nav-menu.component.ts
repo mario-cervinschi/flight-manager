@@ -1,4 +1,3 @@
-// components/desktop-nav-menu/desktop-nav-menu.component.ts
 import { Component, Input } from '@angular/core';
 import { RouterModule } from '@angular/router';
 import { NavPage } from '../nav-bar.component';

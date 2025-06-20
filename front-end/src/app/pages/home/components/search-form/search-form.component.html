@@ -1,0 +1,227 @@
+<form
+  class="flex flex-col space-y-4 sm:bg-gradient-to-tr sm:from-custom-nav-secondary sm:via-custom-nav-via sm:to-custom-nav-secondary bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary rounded-lg px-4 py-6"
+  [formGroup]="fg"
+>
+  <div class="w-full">
+    <!-- Plecare și Destinație -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <!-- Plecare -->
+      <div class="relative">
+        <label
+          class="absolute pl-3 pt-1 text-sm font-medium text-custom-nav-via/80 mb-2 z-10 transition-opacity duration-200"
+          [class.opacity-100]="departureSearchTerm || selectedDeparture"
+          [class.opacity-0]="!departureSearchTerm && !selectedDeparture"
+        >
+          {{ selectedDeparture || departureSearchTerm ? "Departure" : "" }}
+        </label>
+        <div class="relative">
+          <input
+            type="text"
+            class="w-full px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50 transition-all placeholder-custom-nav-primary/50 text-custom-nav-via/90 font-semibold text-lg"
+            [placeholder]="
+              selectedDeparture
+                ? selectedDeparture.city + ' (' + selectedDeparture.code + ')'
+                : 'Departure'
+            "
+            [value]="selectedDeparture ? selectedDeparture.city + ' (' + selectedDeparture.code + ')' : departureSearchTerm"
+            [class.pt-5]="departureSearchTerm || selectedDeparture"
+            [class.pb-1]="departureSearchTerm || selectedDeparture"
+            [class.py-3.5]="!departureSearchTerm && !selectedDeparture"
+            [class.text-gray-400]="!selectedDeparture"
+            (input)="onDepartureSearch($event)"
+            (keydown)="onDepartureKeyDown($event)"
+            (focus)="onDepartureFocus()"
+            (blur)="onBlur('departure')"
+          />
+        </div>
+
+        <!-- Dropdown pentru plecare -->
+        @if (showDepartureDropdown) {
+        <div
+          class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+        >
+          @for (airport of filteredDepartures; track airport.code) {
+          <div
+            class="px-3 py-2 hover:bg-emerald-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+            (mousedown)="selectDepartureWithDelay(airport)"
+          >
+            <div class="font-medium text-gray-900">
+              {{ airport.city }} ({{ airport.code }})
+            </div>
+            <div class="text-sm text-gray-600">{{ airport.name }}</div>
+            <div class="text-xs text-gray-500">{{ airport.country }}</div>
+          </div>
+          } @empty {
+          <div class="px-3 py-2 text-gray-500 text-center">
+            Nu s-au găsit rezultate
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Error message pentru plecare -->
+        @if (fg.get('departureForm')?.invalid && (fg.get('departureForm')?.dirty
+        || fg.get('departureForm')?.touched)) {
+        <div>
+          <small class="text-red-600 text-sm mt-1 block"
+            >Selectează punctul de plecare.</small
+          >
+        </div>
+        }
+      </div>
+
+      <!-- Destinație -->
+      <div class="relative">
+        <label class="block text-sm font-medium text-gray-50 mb-2">
+          {{ selectedDestination ? "Destinație" : "" }}
+        </label>
+        <div class="relative">
+          <input
+            #destinationInput
+            type="text"
+            class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
+            [placeholder]="
+              selectedDestination
+                ? selectedDestination.city +
+                  ' (' +
+                  selectedDestination.code +
+                  ')'
+                : 'Selectează destinația'
+            "
+            [value]="destinationSearchTerm"
+            (input)="onDestinationSearch($event)"
+            (focus)="onDestinationFocus()"
+            (blur)="onBlur('destination')"
+            [class.cursor-not-allowed]="selectedDestination"
+            [readonly]="!!selectedDestination"
+          />
+
+          <!-- Clear button pentru destinație -->
+          @if (selectedDestination) {
+          <button
+            type="button"
+            class="absolute right-2 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+            (click)="clearDestination()"
+          >
+            ✕
+          </button>
+          }
+        </div>
+
+        <!-- Dropdown pentru destinație -->
+        @if (showDestinationDropdown && !selectedDestination) {
+        <div
+          class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+        >
+          @for (airport of filteredDestinations; track airport.code) {
+          <div
+            class="px-3 py-2 hover:bg-emerald-50 cursor-pointer border-b border-gray-100 last:border-b-0"
+            (click)="selectDestination(airport)"
+          >
+            <div class="font-medium text-gray-900">
+              {{ airport.city }} ({{ airport.code }})
+            </div>
+            <div class="text-sm text-gray-600">{{ airport.name }}</div>
+            <div class="text-xs text-gray-500">{{ airport.country }}</div>
+          </div>
+          } @empty {
+          <div class="px-3 py-2 text-gray-500 text-center">
+            Nu s-au găsit rezultate
+          </div>
+          }
+        </div>
+        }
+
+        <!-- Error message pentru destinație -->
+        @if (fg.get('destinationForm')?.invalid &&
+        (fg.get('destinationForm')?.dirty ||
+        fg.get('destinationForm')?.touched)) {
+        <div>
+          <small class="text-red-600 text-sm mt-1 block"
+            >Selectează destinația.</small
+          >
+        </div>
+        }
+      </div>
+    </div>
+
+    <!-- Date plecare și întoarcere -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <!-- Data plecare -->
+      <div>
+        <label
+          for="departureDatePicker"
+          class="block text-sm font-medium text-gray-50 mb-2"
+          >Data plecare</label
+        >
+        <input
+          type="date"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
+          formControlName="departureDateForm"
+          id="departureDatePicker"
+        />
+        @if (fg.get('departureDateForm')?.invalid &&
+        (fg.get('departureDateForm')?.dirty ||
+        fg.get('departureDateForm')?.touched)) {
+        <div>
+          <small class="text-red-600 text-sm mt-1 block"
+            >Selectează data de plecare.</small
+          >
+        </div>
+        }
+      </div>
+
+      <!-- Data întoarcere -->
+      <div>
+        <label
+          for="returnDatePicker"
+          class="block text-sm font-medium text-gray-50 mb-2"
+          >Data întoarcere (opțional)</label
+        >
+        <input
+          type="date"
+          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
+          formControlName="returnDateForm"
+          id="returnDatePicker"
+        />
+      </div>
+    </div>
+
+    <!-- Numărul de bilete -->
+    <div class="mb-4">
+      <label
+        for="ticketSelector"
+        class="block text-sm font-medium text-gray-50 mb-2"
+        >Numărul de bilete</label
+      >
+      <select
+        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
+        formControlName="ticketsForm"
+        id="ticketSelector"
+      >
+        @for (num of ticketOptions; track num) {
+        <option [value]="num">
+          {{ num }} {{ num === 1 ? "bilet" : "bilete" }}
+        </option>
+        }
+      </select>
+      @if (fg.get('ticketsForm')?.invalid && (fg.get('ticketsForm')?.dirty ||
+      fg.get('ticketsForm')?.touched)) {
+      <div>
+        <small class="text-red-600 text-sm mt-1 block"
+          >Selectează numărul de bilete.</small
+        >
+      </div>
+      }
+    </div>
+
+    <!-- Buton de căutare -->
+    <button
+      type="submit"
+      class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+      (click)="retrieveFormData()"
+    >
+      🔍 Caută zboruri
+    </button>
+  </div>
+</form>

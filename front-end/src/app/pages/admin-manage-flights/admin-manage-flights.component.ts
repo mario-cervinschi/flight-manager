@@ -1,19 +1,18 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { Flight } from '../model/flight';
-import { ServicesService } from '../shared/services.service';
+import { Flight } from '../../model/flight';
+import { ServicesService } from '../../shared/services.service';
 import { FormInputComponent } from './form-input/form-input.component';
 import { UpdateFormComponent } from './update-form/update-form.component';
 import { Subscription } from 'rxjs';
-import { FlightTableWebsocketService } from '../shared/flight-table-websocket.service';
+import { FlightTableWebsocketService } from '../../shared/flight-table-websocket.service';
 
 @Component({
-  selector: 'app-manage-flights-interface',
+  selector: 'app-admin-manage-flights',
   imports: [FormInputComponent, UpdateFormComponent],
-  templateUrl: './manage-flights-interface.component.html',
-  styleUrl: './manage-flights-interface.component.css'
+  templateUrl: './admin-manage-flights.component.html',
+  styleUrl: './admin-manage-flights.component.css'
 })
-export class ManageFlightsInterfaceComponent implements OnInit{
-
+export class AdminManageFlightsComponent implements OnInit{
   flights: Flight[] = [];
   private wsSubscription?: Subscription;
 

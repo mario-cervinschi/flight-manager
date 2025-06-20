@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ServicesService } from '../../shared/services.service';
+import { ServicesService } from '../../../shared/services.service';
 
 @Component({
   selector: 'app-form-input',

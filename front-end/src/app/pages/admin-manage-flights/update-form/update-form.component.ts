@@ -1,9 +1,9 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, ViewChild } from '@angular/core';
-import { Flight } from '../../model/flight';
+import { Flight } from '../../../model/flight';
 import { FormInputComponent } from "../form-input/form-input.component";
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { ServicesService } from '../../shared/services.service';
+import { ServicesService } from '../../../shared/services.service';
 
 declare var bootstrap: any;
 
