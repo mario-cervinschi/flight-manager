@@ -7,7 +7,7 @@ import { AirportInputComponent } from "./components/airport-input.component";
 
 @Component({
   selector: 'app-search-form',
-  imports: [ReactiveFormsModule, NgClass, AirportInputComponent],
+  imports: [ReactiveFormsModule, AirportInputComponent],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.css'
 })
