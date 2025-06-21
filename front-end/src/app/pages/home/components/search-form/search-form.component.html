@@ -29,16 +29,17 @@
         <app-input-airports
           [inputLabel]="'Destination'"
           [airports]="destinationAirports"
-          [disabled]="!selectedDeparture || isLoadingDestinations"
           (selectedAirport)="selectDestination($event)"
         ></app-input-airports>
 
         @if (isLoadingDestinations) {
-          <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
-            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"></div>
-          </div>
+        <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+          <div
+            class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"
+          ></div>
+        </div>
         }
-      
+
         <!-- Destination error message -->
         @if (fg.get('destinationForm')?.invalid &&
         (fg.get('destinationForm')?.dirty ||
@@ -56,7 +57,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <!-- Departure date -->
       <div>
-        <label
+        <!-- <label
           for="departureDatePicker"
           class="block text-sm font-medium text-gray-50 mb-2"
           >Departure Date</label
@@ -66,7 +67,14 @@
           class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
           formControlName="departureDateForm"
           id="departureDatePicker"
-        />
+        /> -->
+
+        <app-calendar-input
+          [inputLabel]="'Departure Date'"
+          [dates]="dates"
+          (onDateChanged)="getNewDates($event)"
+        ></app-calendar-input>
+
         @if (fg.get('departureDateForm')?.invalid &&
         (fg.get('departureDateForm')?.dirty ||
         fg.get('departureDateForm')?.touched)) {
@@ -80,17 +88,9 @@
 
       <!-- Return date -->
       <div>
-        <label
-          for="returnDatePicker"
-          class="block text-sm font-medium text-gray-50 mb-2"
-          >Return date (optional)</label
-        >
-        <input
-          type="date"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
-          formControlName="returnDateForm"
-          id="returnDatePicker"
-        />
+        <app-calendar-input
+          [inputLabel]="'Return Date'"
+        ></app-calendar-input>
       </div>
     </div>
 

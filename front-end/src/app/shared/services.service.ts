@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Flight } from '../model/flight';
 import { Observable, Subject, firstValueFrom } from 'rxjs';
 import { Airport } from '../model/airport';
+import { CalendarDay } from '../model/calendar_day';
 
 @Injectable({
   providedIn: 'root'
@@ -53,6 +54,24 @@ export class ServicesService {
       console.error('Error fetching destination airports:', error);
       throw error;
     }
+  }
+
+  generateMockDates(year: number, month: number): CalendarDay[] {
+    const dates: CalendarDay[] = [];
+    const daysInMonth = new Date(year, month, 0).getDate();
+
+    for (let day = 1; day <= daysInMonth; day++) {
+      dates.push({
+        date: new Date(year, month - 1, day),
+        enabled: Math.random() > 0.3, // Random pentru testare
+        price:
+          Math.random() > 0.5
+            ? Math.floor(Math.random() * 500) + 100
+            : undefined,
+      });
+    }
+
+    return dates;
   }
 
 }
