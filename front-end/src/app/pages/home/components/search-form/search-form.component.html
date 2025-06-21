@@ -57,22 +57,11 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
       <!-- Departure date -->
       <div class="relative">
-        <!-- <label
-          for="departureDatePicker"
-          class="block text-sm font-medium text-gray-50 mb-2"
-          >Departure Date</label
-        >
-        <input
-          type="date"
-          class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
-          formControlName="departureDateForm"
-          id="departureDatePicker"
-        /> -->
-
         <app-calendar-input
           [inputLabel]="'Departure Date'"
           [dates]="dates"
-          (onDateChanged)="getNewDates($event)"
+          (onMonthChanged)="getNewDates($event)"
+          (outputSelectedDate)="selectDepartureDate($event)"
         ></app-calendar-input>
 
         @if (fg.get('departureDateForm')?.invalid &&
@@ -89,9 +78,11 @@
       <!-- Return date -->
       <div class="relative">
         <app-calendar-input
+          #returnDateInput
           [inputLabel]="'Return Date'"
           [dates]="dates"
-          (onDateChanged)="getNewDates($event)"
+          (onMonthChanged)="getNewDates($event)"
+          (outputSelectedDate)="selectReturnDate($event)"
         ></app-calendar-input>
       </div>
     </div>
@@ -124,7 +115,6 @@
       }
     </div>
 
-    <!-- Buton de căutare -->
     <button
       type="submit"
       class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"

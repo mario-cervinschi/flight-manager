@@ -63,7 +63,7 @@ export class ServicesService {
     for (let day = 1; day <= daysInMonth; day++) {
       dates.push({
         date: new Date(year, month - 1, day),
-        enabled: Math.random() > 0.3, // Random pentru testare
+        enabled: Math.random() > 0.3,
         price:
           Math.random() > 0.5
             ? Math.floor(Math.random() * 500) + 100

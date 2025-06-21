@@ -10,6 +10,7 @@ import { Airport } from '../../../../../model/airport';
   template: `<app-generic-input
       [inputLabel]="inputLabel"
       [inputType]="'Calendar'"
+      [currentObject]="selectedDate"
       (hideCurrentDropdown)="activeDropdown($event)"
     ></app-generic-input>
 
@@ -17,7 +18,7 @@ import { Airport } from '../../../../../model/airport';
       [showDropdown]="showCalendarDropdown"
       [availableDates]="dates"
       (dateSelected)="onDateSelected($event)"
-      (monthChanged)="onMonthChanged($event)"
+      (monthChanged)="onNewMonth($event)"
     ></app-dropdown-calendar>`,
   styles: ``,
 })
@@ -27,20 +28,23 @@ export class CalendarInputComponent {
   @Input() selectedDepartureAirport: Airport | null = null;
   @Input() selectedArrivalAirport: Airport | null = null;
 
-  @Output() onDateChanged = new EventEmitter<{ year: number; month: number }>();
-  
+  @Output() onMonthChanged = new EventEmitter<{ year: number; month: number }>();
+  @Output() outputSelectedDate = new EventEmitter<Date | null>();
+
   showCalendarDropdown: boolean = false;
-  selectedDate?: Date;
+  selectedDate: Date | null = null;
 
   onDateSelected(date: Date) {
     this.selectedDate = date;
-    console.log('Data plecare selectată:', date);
+    this.outputSelectedDate.emit(date);
   }
 
-  onMonthChanged(event: { year: number; month: number }) {
-    // console.log('Luna schimbată pentru plecare:', event);
-    // this.loadDatesForMonth(event.year, event.month);
-    this.onDateChanged.emit(event);
+  clearSelectedDate(){
+    this.selectedDate = null;
+  }
+
+  onNewMonth(event: { year: number; month: number }) {
+    this.onMonthChanged.emit(event);
   }
 
   activeDropdown(value: boolean) {

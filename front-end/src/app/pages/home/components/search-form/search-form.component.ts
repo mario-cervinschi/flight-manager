@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   FormControl,
   FormGroup,
@@ -19,7 +19,7 @@ import { CalendarDay } from '../../../../model/calendar_day';
 })
 export class SearchFormComponent {
   fg = new FormGroup({
-    destinationForm: new FormControl('', Validators.required),
+    destinationForm: new FormControl(''),
     departureForm: new FormControl('', Validators.required),
     departureDateForm: new FormControl('', Validators.required),
     returnDateForm: new FormControl(''),
@@ -120,6 +120,9 @@ export class SearchFormComponent {
   selectedDestination: Airport | null = null;
   selectedDeparture: Airport | null = null;
 
+  selectedDepartureDate: Date | null = null;
+  selectedReturnDate: Date | null = null;
+
   isLoadingDestinations = false;
 
   ticketOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -173,10 +176,31 @@ export class SearchFormComponent {
     this.fg.patchValue({ destinationForm: airport ? airport.code : '' });
   }
 
+  @ViewChild('returnDateInput') returnDateInput!: CalendarInputComponent;
+
+  selectDepartureDate(departureDate: Date | null) {
+    this.selectedDepartureDate = departureDate;
+    this.fg.patchValue({ departureDateForm: departureDate ? departureDate.toISOString() : '' });
+
+    if (this.selectedReturnDate) {
+      this.selectedReturnDate = null;
+      this.fg.patchValue({
+        returnDateForm: '',
+      });
+      this.returnDateInput.clearSelectedDate();
+    }
+  }
+
+  selectReturnDate(returnDate: Date | null) {
+    this.selectedReturnDate = returnDate;
+    this.fg.patchValue({ returnDateForm: returnDate ? returnDate.toISOString() : '' });
+  }
+
   retrieveFormData(): FormGroup | null {
     this.fg.markAllAsTouched();
 
     if (this.fg.valid) {
+      console.log(this.fg);
       return this.fg;
     } else {
       return null;

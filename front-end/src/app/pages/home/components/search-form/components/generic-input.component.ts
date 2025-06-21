@@ -22,22 +22,14 @@ import { CalendarDay } from '../../../../../model/calendar_day';
           inputType === 'Airport' && currentObject
             ? currentObject.city + ' (' + currentObject.code + ')'
             : inputType === 'Calendar' && currentObject
-            ? currentObject.date +
-              ' ' +
-              currentObject.month +
-              ' ' +
-              currentObject.year
+            ? formatDate(currentObject)
             : inputLabel
         "
         [value]="
           inputType === 'Airport' && currentObject
             ? currentObject.city + ' (' + currentObject.code + ')'
             : inputType === 'Calendar' && currentObject
-            ? currentObject.date +
-              ' ' +
-              currentObject.month +
-              ' ' +
-              currentObject.year
+            ? formatDate(currentObject)
             : searchTerm
         "
         [class.pt-5]="searchTerm || currentObject"
@@ -62,7 +54,7 @@ export class GenericInputComponent {
 
   searchTerm = '';
 
-  select(object: CalendarDay | Airport) {
+  select(object: Date | Airport) {
     this.currentObject = object;
     this.searchTerm = '';
   }
@@ -75,6 +67,16 @@ export class GenericInputComponent {
     }
 
     this.inputSearchTermChange.emit(event);
+  }
+
+  formatDate(date: Date | null): string {
+    if (!date) return '';
+  
+    return date.toLocaleDateString('ro-RO', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric',
+    }).replace('.', '');
   }
 
   onKeyDown(event: KeyboardEvent) {

@@ -6,13 +6,71 @@ import {
   Output,
   SimpleChanges,
 } from '@angular/core';
-import { CommonModule } from '@angular/common';
 import { CalendarDay } from '../../../../../model/calendar_day';
+import { NgClass } from '@angular/common';
 
 @Component({
   selector: 'app-dropdown-calendar',
-  imports: [CommonModule],
-  templateUrl:'dropdown.html',
+  imports: [NgClass],
+  template:`@if (showDropdown) {
+    <div class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto">
+      <div
+        class="flex items-center justify-between mb-4 bg-custom-nav-via/80 text-white/80 select-none"
+      >
+        <button
+          type="button"
+          class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 ml-1 rounded-md hover:bg-custom-nav-secondary/60"
+          (mousedown)="onMouseDown($event)"
+          (click)="previousMonth()"
+        >
+          ‹
+        </button>
+        <span class="month-year pb-1">
+          {{ monthNames[currentMonth] }} {{ currentYear }}
+        </span>
+        <button
+          type="button"
+          class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 mr-1 rounded-md hover:bg-custom-nav-secondary/60"
+          (mousedown)="onMouseDown($event)"
+          (click)="nextMonth()"
+        >
+          ›
+        </button>
+      </div>
+    
+      <!-- WeekDays -->
+      <div class="grid grid-cols-7 -mt-2 mb-2 select-none">
+        @for (day of weekDays; track day) {
+          <div class="text-center">{{ day }}</div>
+        }
+      </div>
+    
+      <!-- MonthDays -->
+      <div class="grid grid-cols-7 gap-x-2 mx-1 mb-1">
+        @for (week of getWeeks(); track $index) {
+          @for (day of week; track day.date) {
+            <div
+              class="h-12 flex flex-col items-center justify-center relative font-semibold"
+              [ngClass]="{
+                'cursor-pointer text-custom-nav-secondary/70 hover:bg-custom-nav-secondary/20 hover:rounded-md': day.enabled,
+                'text-custom-nav-primary/10': !isCurrentMonth(day.date),
+                'text-custom-nav-primary/40 cursor-default': !day.enabled && isCurrentMonth(day.date),
+                'today': isToday(day.date)
+              }"
+              (mousedown)="selectDate(day)"
+            >
+              <span class="mb-2">{{ day.date.getDate() }}</span>
+              @if (day.price && day.enabled) {
+                <span class="absolute text-3xs mt-5">
+                  {{ day.price }}RON
+                </span>
+              }
+            </div>
+          }
+        }
+      </div>
+    </div>
+  }`,
   styles: ``,
 })
 export class DropdownCalendarComponent implements OnInit {
@@ -60,14 +118,13 @@ export class DropdownCalendarComponent implements OnInit {
     const lastDay = new Date(this.currentYear, this.currentMonth + 1, 0);
     const startDate = new Date(firstDay);
 
-    // Ajustăm pentru prima zi a săptămânii (Luni = 0)
     const firstDayOfWeek = (firstDay.getDay() + 6) % 7;
     startDate.setDate(startDate.getDate() - firstDayOfWeek);
 
     this.calendarDays = [];
 
     for (let i = 0; i < 42; i++) {
-      // 6 săptămâni x 7 zile
+      // 6 weeks x 7 days
       const currentDate = new Date(startDate);
       currentDate.setDate(startDate.getDate() + i);
 
@@ -102,7 +159,7 @@ export class DropdownCalendarComponent implements OnInit {
   
 
   onMouseDown(event: MouseEvent) {
-    event.preventDefault(); // Prevents input from losing focus
+    event.preventDefault();
   }
 
   selectDate(day: CalendarDay) {
