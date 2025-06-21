@@ -1,0 +1,55 @@
+@if (showDropdown) {
+<div class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto">
+  <div
+    class="flex items-center justify-between mb-4 bg-custom-nav-via/80 text-white/80 select-none"
+  >
+    <button
+      type="button"
+      class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 ml-1 rounded-md hover:bg-custom-nav-secondary/60"
+      (mousedown)="onMouseDown($event)"
+      (click)="previousMonth()"
+    >
+      ‹
+    </button>
+    <span class="month-year pb-1">
+      {{ monthNames[currentMonth] }} {{ currentYear }}
+    </span>
+    <button
+      type="button"
+      class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 mr-1 rounded-md hover:bg-custom-nav-secondary/60"
+      (mousedown)="onMouseDown($event)"
+      (click)="nextMonth()"
+    >
+      ›
+    </button>
+  </div>
+
+  <!-- WeekDays -->
+  <div class="grid grid-cols-7 -mt-2 mb-2 select-none">
+    <div *ngFor="let day of weekDays" class="text-center">{{ day }}</div>
+  </div>
+
+  <!-- MonthDays -->
+  <div class="grid grid-cols-7 gap-x-2 mx-1 mb-1">
+    <ng-container *ngFor="let week of getWeeks()">
+      <div
+        *ngFor="let day of week"
+        class="h-12 flex flex-col items-center justify-center relative font-semibold"
+        [ngClass]="{
+          'cursor-pointer text-custom-nav-secondary/70 hover:bg-custom-nav-secondary/20 hover:rounded-md': day.enabled,
+          'text-custom-nav-primary/10': !isCurrentMonth(day.date),
+          'text-custom-nav-primary/40 cursor-default': !day.enabled && isCurrentMonth(day.date),
+          'today': isToday(day.date)
+        }"
+        (click)="selectDate(day)"
+      >
+        <span class="mb-2">{{ day.date.getDate() }}</span>
+        <span *ngIf="day.price && day.enabled" class="absolute text-3xs mt-5">
+          {{ day.price }}RON
+        </span>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+}

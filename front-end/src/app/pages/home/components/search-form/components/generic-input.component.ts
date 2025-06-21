@@ -116,6 +116,6 @@ export class GenericInputComponent {
       if (!this.currentObject && !this.searchTerm) {
         this.searchTerm = '';
       }
-    }, 100);
+    }, 25);
   }
 }

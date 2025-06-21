@@ -15,6 +15,10 @@ module.exports = {
         'custom-card-background': '#ffffff',
         'custom-hover-link': '#064e3b',
       },
+      fontSize: {
+        '2xs': '0.625rem', // 10px
+        '3xs': '0.5rem',
+      }
     },
   },
   plugins: [],
