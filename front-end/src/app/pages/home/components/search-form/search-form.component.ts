@@ -10,10 +10,17 @@ import { Airport } from '../../../../model/airport';
 import { AirportInputComponent } from './components/airport-input.component';
 import { CalendarInputComponent } from './components/calendar-input.component';
 import { CalendarDay } from '../../../../model/calendar_day';
+import { TicketInputComponent } from './components/ticket-input.component';
+import { TicketCounter } from '../../../../model/ticket_counter';
 
 @Component({
   selector: 'app-search-form',
-  imports: [ReactiveFormsModule, AirportInputComponent, CalendarInputComponent],
+  imports: [
+    ReactiveFormsModule,
+    AirportInputComponent,
+    CalendarInputComponent,
+    TicketInputComponent,
+  ],
   templateUrl: './search-form.component.html',
   styleUrl: './search-form.component.css',
 })
@@ -23,7 +30,7 @@ export class SearchFormComponent {
     departureForm: new FormControl('', Validators.required),
     departureDateForm: new FormControl('', Validators.required),
     returnDateForm: new FormControl(''),
-    ticketsForm: new FormControl(1, [Validators.required, Validators.min(1)]),
+    ticketsForm: new FormControl({ adults: 0, children: 0, infants: 0 }, Validators.required),
   });
 
   airports: Airport[] = [
@@ -123,6 +130,8 @@ export class SearchFormComponent {
   selectedDepartureDate: Date | null = null;
   selectedReturnDate: Date | null = null;
 
+  selectedTicketNumbers: TicketCounter | null = null;
+
   isLoadingDestinations = false;
 
   ticketOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
@@ -167,6 +176,11 @@ export class SearchFormComponent {
     }
   }
 
+  selectTicketNumber(event: TicketCounter) {
+    this.fg.get('ticketsForm')?.setValue(event);
+    this.selectedTicketNumbers = event;
+  }
+
   getNewDates(event: { year: number; month: number }) {
     this.dates = this.service.generateMockDates(event.year, event.month);
   }
@@ -180,7 +194,9 @@ export class SearchFormComponent {
 
   selectDepartureDate(departureDate: Date | null) {
     this.selectedDepartureDate = departureDate;
-    this.fg.patchValue({ departureDateForm: departureDate ? departureDate.toISOString() : '' });
+    this.fg.patchValue({
+      departureDateForm: departureDate ? departureDate.toISOString() : '',
+    });
 
     if (this.selectedReturnDate) {
       this.selectedReturnDate = null;
@@ -193,7 +209,9 @@ export class SearchFormComponent {
 
   selectReturnDate(returnDate: Date | null) {
     this.selectedReturnDate = returnDate;
-    this.fg.patchValue({ returnDateForm: returnDate ? returnDate.toISOString() : '' });
+    this.fg.patchValue({
+      returnDateForm: returnDate ? returnDate.toISOString() : '',
+    });
   }
 
   retrieveFormData(): FormGroup | null {

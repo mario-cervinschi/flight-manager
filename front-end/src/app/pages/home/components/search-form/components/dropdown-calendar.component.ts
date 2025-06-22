@@ -13,14 +13,13 @@ import { NgClass } from '@angular/common';
   selector: 'app-dropdown-calendar',
   imports: [NgClass],
   template:`@if (showDropdown) {
-    <div class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto">
+    <div class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto" (mousedown)="onMouseDown($event)">
       <div
         class="flex items-center justify-between mb-4 bg-custom-nav-via/80 text-white/80 select-none"
       >
         <button
           type="button"
           class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 ml-1 rounded-md hover:bg-custom-nav-secondary/60"
-          (mousedown)="onMouseDown($event)"
           (click)="previousMonth()"
         >
           ‹
@@ -31,7 +30,6 @@ import { NgClass } from '@angular/common';
         <button
           type="button"
           class="text-2xl border-none cursor-pointer px-3 pb-1 my-1.5 mr-1 rounded-md hover:bg-custom-nav-secondary/60"
-          (mousedown)="onMouseDown($event)"
           (click)="nextMonth()"
         >
           ›
@@ -83,7 +81,7 @@ export class DropdownCalendarComponent implements OnInit {
   currentDate = new Date();
   currentMonth = new Date().getMonth();
   currentYear = new Date().getFullYear();
-  weekDays = ['L', 'M', 'M', 'J', 'V', 'S', 'D'];
+  weekDays = ['L', 'Ma', 'Mi', 'J', 'V', 'S', 'D'];
   monthNames = [
     'Ianuarie',
     'Februarie',

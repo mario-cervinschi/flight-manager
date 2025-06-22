@@ -11,7 +11,8 @@ import {
   template: `
     @if (showDropdown) {
     <div
-      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+      class="absolute z-50 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto select-none"
+      (mousedown)="onMouseDown($event)"
     >
       @for (group of groupedAirports; track group.country) {
       <!-- Country name -->
@@ -50,6 +51,10 @@ export class DropdownAirportsComponent {
 
   get groupedAirports(): GroupedAirports[] {
     return groupAirportsByCountry(this.airports);
+  }
+
+  onMouseDown(event: MouseEvent) {
+    event.preventDefault();
   }
 
   select(airport: Airport) {

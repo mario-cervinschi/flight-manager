@@ -1,126 +1,118 @@
-<form
+<div
   class="flex flex-col space-y-4 sm:bg-gradient-to-tr sm:from-custom-nav-secondary sm:via-custom-nav-via sm:to-custom-nav-secondary bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary rounded-lg px-4 py-6"
-  [formGroup]="fg"
 >
-  <div class="w-full">
-    <!-- Departure and destination -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <!-- DEPARTURE -->
-      <div class="relative">
-        <app-input-airports
-          [inputLabel]="'Departure'"
-          [airports]="airports"
-          (selectedAirport)="selectDeparture($event)"
-        ></app-input-airports>
+  <h1 class="text-3xl px-4 mb-2 font-bold text-white/95">
+    Where do you want to fly?
+  </h1>
+  <form class="flex flex-col space-y-4 px-4" [formGroup]="fg">
+    <div class="w-full">
+      <!-- Departure and destination -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- DEPARTURE -->
+        <div class="relative">
+          <app-input-airports
+            [inputLabel]="'Departure'"
+            [airports]="airports"
+            (selectedAirport)="selectDeparture($event)"
+          ></app-input-airports>
 
-        <!-- Departure error message -->
-        @if (fg.get('departureForm')?.invalid && (fg.get('departureForm')?.dirty
-        || fg.get('departureForm')?.touched)) {
+          <!-- Departure error message -->
+          @if (fg.get('departureForm')?.invalid &&
+          (fg.get('departureForm')?.dirty || fg.get('departureForm')?.touched))
+          {
+          <div>
+            <small class="text-red-600 text-sm mt-1 block"
+              >Please select departure</small
+            >
+          </div>
+          }
+        </div>
+
+        <!-- DESTINATION -->
+        <div class="relative">
+          <app-input-airports
+            [inputLabel]="'Destination'"
+            [airports]="destinationAirports"
+            (selectedAirport)="selectDestination($event)"
+          ></app-input-airports>
+
+          @if (isLoadingDestinations) {
+          <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+            <div
+              class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"
+            ></div>
+          </div>
+          }
+
+          <!-- Destination error message -->
+          @if (fg.get('destinationForm')?.invalid &&
+          (fg.get('destinationForm')?.dirty ||
+          fg.get('destinationForm')?.touched)) {
+          <div>
+            <small class="text-red-600 text-sm mt-1 block"
+              >Please select destination</small
+            >
+          </div>
+          }
+        </div>
+      </div>
+
+      <!-- Dates -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <!-- Departure date -->
+        <div class="relative">
+          <app-calendar-input
+            [inputLabel]="'Departure Date'"
+            [dates]="dates"
+            (onMonthChanged)="getNewDates($event)"
+            (outputSelectedDate)="selectDepartureDate($event)"
+          ></app-calendar-input>
+
+          @if (fg.get('departureDateForm')?.invalid &&
+          (fg.get('departureDateForm')?.dirty ||
+          fg.get('departureDateForm')?.touched)) {
+          <div>
+            <small class="text-red-600 text-sm mt-1 block"
+              >Please select departure date</small
+            >
+          </div>
+          }
+        </div>
+
+        <!-- Return date -->
+        <div class="relative">
+          <app-calendar-input
+            #returnDateInput
+            [inputLabel]="'Return Date'"
+            [dates]="dates"
+            (onMonthChanged)="getNewDates($event)"
+            (outputSelectedDate)="selectReturnDate($event)"
+          ></app-calendar-input>
+        </div>
+      </div>
+
+      <!-- Tickets -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+        <div class="relative">
+          <app-ticket-input [inputLabel]="'Passengers'" (peopleNumberChanged)="selectTicketNumber($event)"></app-ticket-input>
+        </div>
+
+        @if (fg.get('ticketsForm')?.invalid && (fg.get('ticketsForm')?.dirty ||
+        fg.get('ticketsForm')?.touched)) {
         <div>
           <small class="text-red-600 text-sm mt-1 block"
-            >Please select departure</small
+            >Please select tickets</small
           >
         </div>
         }
-      </div>
-
-      <!-- DESTINATION -->
-      <div class="relative">
-        <app-input-airports
-          [inputLabel]="'Destination'"
-          [airports]="destinationAirports"
-          (selectedAirport)="selectDestination($event)"
-        ></app-input-airports>
-
-        @if (isLoadingDestinations) {
-        <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
-          <div
-            class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"
-          ></div>
-        </div>
-        }
-
-        <!-- Destination error message -->
-        @if (fg.get('destinationForm')?.invalid &&
-        (fg.get('destinationForm')?.dirty ||
-        fg.get('destinationForm')?.touched)) {
-        <div>
-          <small class="text-red-600 text-sm mt-1 block"
-            >Please select destination</small
-          >
-        </div>
-        }
-      </div>
-    </div>
-
-    <!-- Dates -->
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-      <!-- Departure date -->
-      <div class="relative">
-        <app-calendar-input
-          [inputLabel]="'Departure Date'"
-          [dates]="dates"
-          (onMonthChanged)="getNewDates($event)"
-          (outputSelectedDate)="selectDepartureDate($event)"
-        ></app-calendar-input>
-
-        @if (fg.get('departureDateForm')?.invalid &&
-        (fg.get('departureDateForm')?.dirty ||
-        fg.get('departureDateForm')?.touched)) {
-        <div>
-          <small class="text-red-600 text-sm mt-1 block"
-            >Please select departure date</small
-          >
-        </div>
-        }
-      </div>
-
-      <!-- Return date -->
-      <div class="relative">
-        <app-calendar-input
-          #returnDateInput
-          [inputLabel]="'Return Date'"
-          [dates]="dates"
-          (onMonthChanged)="getNewDates($event)"
-          (outputSelectedDate)="selectReturnDate($event)"
-        ></app-calendar-input>
-      </div>
-    </div>
-
-    <!-- Tickets -->
-    <div class="mb-4">
-      <label
-        for="ticketSelector"
-        class="block text-sm font-medium text-gray-50 mb-2"
-        >Number of tickets</label
-      >
-      <select
-        class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50"
-        formControlName="ticketsForm"
-        id="ticketSelector"
-      >
-        @for (num of ticketOptions; track num) {
-        <option [value]="num">
-          {{ num }} {{ num === 1 ? "ticket" : "tickets" }}
-        </option>
-        }
-      </select>
-      @if (fg.get('ticketsForm')?.invalid && (fg.get('ticketsForm')?.dirty ||
-      fg.get('ticketsForm')?.touched)) {
-      <div>
-        <small class="text-red-600 text-sm mt-1 block"
-          >Please select tickets</small
+        <button
+          type="submit"
+          class="md:col-span-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+          (click)="retrieveFormData()"
         >
+          Find flights
+        </button>
       </div>
-      }
     </div>
-
-    <button
-      type="submit"
-      class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
-      (click)="retrieveFormData()"
-    >
-      Find flights
-    </button>
-  </div>
-</form>
+  </form>
+</div>
