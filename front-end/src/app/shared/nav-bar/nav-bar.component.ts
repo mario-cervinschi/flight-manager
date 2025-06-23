@@ -12,25 +12,31 @@ export interface NavPage {
   selector: 'app-nav-bar',
   imports: [TopNavComponent, BottomNavComponent, MobileMenuOverlayComponent],
   template: `
-    <app-top-nav 
+    <app-top-nav
+      class="z-50"
       [navPages]="navPages"
       [isMobileMenuOpen]="isMobileMenuOpen"
       (toggleMenu)="toggleMobileMenu()"
-      (closeMenu)="closeMobileMenu()">
+      (closeMenu)="closeMobileMenu()"
+    >
     </app-top-nav>
 
-    <app-bottom-nav 
+    <app-bottom-nav
+      class="z-50"
       [isMobileMenuOpen]="isMobileMenuOpen"
-      (toggleMenu)="toggleMobileMenu()">
+      (toggleMenu)="toggleMobileMenu()"
+    >
     </app-bottom-nav>
 
-    <app-mobile-menu-overlay 
+    <app-mobile-menu-overlay
+      class="z-50"
       [navPages]="navPages"
       [isMobileMenuOpen]="isMobileMenuOpen"
-      (closeMenu)="closeMobileMenu()">
+      (closeMenu)="closeMobileMenu()"
+    >
     </app-mobile-menu-overlay>
   `,
-  styleUrl: './nav-bar.component.css'
+  styleUrl: './nav-bar.component.css',
 })
 export class NavBarComponent {
   navPages: NavPage[] = [
@@ -61,7 +67,7 @@ export class NavBarComponent {
       document.body.classList.remove('overflow-hidden');
     }
   }
-  
+
   private enableBodyScroll() {
     document.body.classList.remove('overflow-hidden');
   }

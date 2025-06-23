@@ -1,70 +1,94 @@
 <div
-  class="flex flex-col space-y-4 sm:bg-gradient-to-tr sm:from-custom-nav-secondary sm:via-custom-nav-via sm:to-custom-nav-secondary bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary rounded-lg px-4 py-6"
+  class="flex flex-col space-y-4 sm:bg-gradient-to-tr sm:from-custom-nav-secondary sm:via-custom-nav-via sm:to-custom-nav-secondary bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary rounded-lg px-4 py-6 pb-10"
 >
-  <h1 class="text-3xl px-4 mb-2 font-bold text-white/95">
+  <h1 class="text-3xl px-4 mb-2 font-bold text-white/95 sm:text-left text-center">
     Where do you want to fly?
   </h1>
   <form class="flex flex-col space-y-4 px-4" [formGroup]="fg">
-    <div class="w-full">
-      <!-- Departure and destination -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-        <!-- DEPARTURE -->
-        <div class="relative">
-          <app-input-airports
-            [inputLabel]="'Departure'"
-            [airports]="airports"
-            (selectedAirport)="selectDeparture($event)"
-          ></app-input-airports>
+    <div class="w-full grid grid-cols-1 sm:grid-cols-3">
+      <div class="relative col-span-1 md:col-span-2 sm:col-span-4">
+        <div class="grid grid-cols-2 gap-2 pb-2">
+          <div class="relative">
+            <app-input-airports
+              #departureInput
+              [inputLabel]="'Origin'"
+              [airports]="airports"
+              (selectedAirport)="selectDeparture($event)"
+            ></app-input-airports>
 
-          <!-- Departure error message -->
-          @if (fg.get('departureForm')?.invalid &&
-          (fg.get('departureForm')?.dirty || fg.get('departureForm')?.touched))
-          {
-          <div>
-            <small class="text-red-600 text-sm mt-1 block"
-              >Please select departure</small
-            >
+            <!-- Departure error message -->
+            @if (fg.get('departureForm')?.invalid &&
+            (fg.get('departureForm')?.dirty ||
+            fg.get('departureForm')?.touched)) {
+            <div>
+              <small class="text-red-600 text-sm mt-1 block"
+                >Please select departure</small
+              >
+            </div>
+            }
           </div>
-          }
-        </div>
 
-        <!-- DESTINATION -->
-        <div class="relative">
-          <app-input-airports
-            [inputLabel]="'Destination'"
-            [airports]="destinationAirports"
-            (selectedAirport)="selectDestination($event)"
-          ></app-input-airports>
+          <!-- DESTINATION -->
+          <div class="relative">
+            <app-input-airports
+              #destinationInput
+              [inputLabel]="'Destination'"
+              [airports]="destinationAirports"
+              (selectedAirport)="selectDestination($event)"
+            ></app-input-airports>
 
-          @if (isLoadingDestinations) {
-          <div class="absolute right-3 top-1/2 transform -translate-y-1/2">
+            @if (isLoadingDestinations) {
             <div
-              class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"
-            ></div>
-          </div>
-          }
-
-          <!-- Destination error message -->
-          @if (fg.get('destinationForm')?.invalid &&
-          (fg.get('destinationForm')?.dirty ||
-          fg.get('destinationForm')?.touched)) {
-          <div>
-            <small class="text-red-600 text-sm mt-1 block"
-              >Please select destination</small
+              class="absolute right-[36%] top-1/2 transform -translate-y-1/2"
             >
+              <div
+                class="animate-spin rounded-full h-4 w-4 border-b-2 border-emerald-500"
+              ></div>
+            </div>
+            }
+
+            <!-- Destination error message -->
+            @if (fg.get('destinationForm')?.invalid &&
+            (fg.get('destinationForm')?.dirty ||
+            fg.get('destinationForm')?.touched)) {
+            <div>
+              <small class="text-red-600 text-sm mt-1 block"
+                >Please select destination</small
+              >
+            </div>
+            }
           </div>
-          }
         </div>
+
+        <button
+          type="button"
+          (click)="swapAirports()"
+          class="flex items-center justify-center absolute left-1/2 top-[40%] transform -translate-x-1/2 -translate-y-1/2 z-10 p-2 bg-white text-emerald-600 hover:bg-emerald-100 rounded-full shadow-md transition duration-200"
+          aria-label="Swap departure and destination"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 24 24"
+            fill="currentColor"
+            class="size-5"
+          >
+            <path
+              fill-rule="evenodd"
+              d="M4.755 10.059a7.5 7.5 0 0 1 12.548-3.364l1.903 1.903h-3.183a.75.75 0 1 0 0 1.5h4.992a.75.75 0 0 0 .75-.75V4.356a.75.75 0 0 0-1.5 0v3.18l-1.9-1.9A9 9 0 0 0 3.306 9.67a.75.75 0 1 0 1.45.388Zm15.408 3.352a.75.75 0 0 0-.919.53 7.5 7.5 0 0 1-12.548 3.364l-1.902-1.903h3.183a.75.75 0 0 0 0-1.5H2.984a.75.75 0 0 0-.75.75v4.992a.75.75 0 0 0 1.5 0v-3.18l1.9 1.9a9 9 0 0 0 15.059-4.035.75.75 0 0 0-.53-.918Z"
+              clip-rule="evenodd"
+            />
+          </svg>
+        </button>
       </div>
 
-      <!-- Dates -->
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+      <div class="col-span-2 grid md:grid-cols-3 sm:grid-cols-2 gap-2">
         <!-- Departure date -->
         <div class="relative">
           <app-calendar-input
-            [inputLabel]="'Departure Date'"
-            [dates]="dates"
-            (onMonthChanged)="getNewDates($event)"
+            #departureDateInput
+            [inputLabel]="'Departure'"
+            [dates]="datesGoTo"
+            (onMonthChanged)="getNewDatesGoTo($event)"
             (outputSelectedDate)="selectDepartureDate($event)"
           ></app-calendar-input>
 
@@ -83,18 +107,19 @@
         <div class="relative">
           <app-calendar-input
             #returnDateInput
-            [inputLabel]="'Return Date'"
-            [dates]="dates"
-            (onMonthChanged)="getNewDates($event)"
+            [inputLabel]="'Return'"
+            [dates]="datesReturn"
+            (onMonthChanged)="getNewDatesReturn($event)"
             (outputSelectedDate)="selectReturnDate($event)"
           ></app-calendar-input>
         </div>
-      </div>
 
-      <!-- Tickets -->
-      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-        <div class="relative">
-          <app-ticket-input [inputLabel]="'Passengers'" (peopleNumberChanged)="selectTicketNumber($event)"></app-ticket-input>
+        <div class="relative md:col-span-1 sm:col-span-2">
+          <app-ticket-input
+            #ticketInput
+            [inputLabel]="'Passengers'"
+            (peopleNumberChanged)="selectTicketNumber($event)"
+          ></app-ticket-input>
         </div>
 
         @if (fg.get('ticketsForm')?.invalid && (fg.get('ticketsForm')?.dirty ||
@@ -105,13 +130,59 @@
           >
         </div>
         }
+      </div>
+
+      <div class="flex md:row-span-2 sm:row-span-1 flex-col items-center justify-center md:ml-6 sm:ml-2">
+        <div
+          class="flex md:flex-col absolute items-center space-y-2 text-white/80 pb-48"
+        >
+          <div class="md:flex hidden items-center text-base">
+            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span>Best price guaranteed</span>
+          </div>
+
+          <div class="md:flex hidden items-center text-base">
+            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Free cancellation</span>
+          </div>
+          <div class="md:flex hidden items-center text-base">
+            <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 20 20">
+              <path
+                fill-rule="evenodd"
+                d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2z"
+                clip-rule="evenodd"
+              ></path>
+            </svg>
+            <span>Secure booking</span>
+          </div>
+        </div>
+
         <button
           type="submit"
-          class="md:col-span-2 w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-md transition duration-300 ease-in-out transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
+          class="w-full px-4 py-3 mt-2 sm:mt-0 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-lg rounded-md transition duration-100 ease-in-out focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:ring-opacity-50"
           (click)="retrieveFormData()"
         >
-          Find flights
+          Let's fly!
         </button>
+        
+        <div class="md:hidden flex items-center justify-center text-white/80 mt-0.5 mr-1">
+          <svg class="w-3 h-3 mr-1 mt-[1px]" fill="currentColor" viewBox="0 0 20 20">
+            <path
+              fill-rule="evenodd"
+              d="M5 9V7a5 5 0 0110 0v2a2 2 0 012 2v5a2 2 0 01-2 2H5a2 2 0 01-2-2v-5a2 2 0 012-2z"
+              clip-rule="evenodd"
+            ></path>
+          </svg>
+          <span class="text-sm">Secure booking</span>
+        </div>
       </div>
     </div>
   </form>

@@ -1,6 +1,5 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { Airport } from '../../../../../model/airport';
-import { CalendarDay } from '../../../../../model/calendar_day';
 
 @Component({
   selector: 'app-generic-input',
@@ -16,6 +15,7 @@ import { CalendarDay } from '../../../../../model/calendar_day';
 
     <div class="relative">
       <input
+        #inputElement
         type="text"
         class="w-full px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50 transition-all placeholder-custom-nav-primary/50 text-custom-nav-via/90 font-semibold text-lg"
         [placeholder]="getPlaceholder()"
@@ -41,6 +41,12 @@ import { CalendarDay } from '../../../../../model/calendar_day';
   styles: ``,
 })
 export class GenericInputComponent {
+  @ViewChild('inputElement') inputElemetRef!: ElementRef<HTMLInputElement>;
+
+  focusInput(){
+    this.inputElemetRef?.nativeElement?.focus();
+  }
+
   @Input() inputLabel: string = '';
   @Input() inputType: 'Airport' | 'Calendar' | 'Ticket' = 'Airport';
   @Input() currentObject: any = null;

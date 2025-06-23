@@ -7,7 +7,7 @@ import { NavPage } from '../nav-bar.component';
   imports: [RouterModule],
   template: `
     <div
-      class="transition-all duration-200 ease-in-out"
+      class="z-50 transition-all duration-200 ease-in-out"
       [class]="menuClasses"
     >
       <div class="bg-gradient-to-b from-slate-100/100 via-slate-50/95 to-custom-card-background/60 backdrop-blur-sm border-t border-white/10">

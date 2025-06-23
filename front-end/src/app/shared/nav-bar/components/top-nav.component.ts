@@ -17,7 +17,7 @@ import { MediumScreenMenuComponent } from './medium-screen-menu.component';
   ],
   template: `
     <!-- Top nav bar -->
-    <div class="w-full h-16 bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary 
+    <div class="z-50 w-full h-16 bg-gradient-to-r from-custom-nav-secondary via-custom-nav-via to-custom-nav-secondary 
                 sm:bg-gradient-to-r sm:from-custom-nav-via sm:to-custom-nav-secondary shadow-lg">
       <div class="flex items-center sm:justify-between justify-center h-full px-6">
         

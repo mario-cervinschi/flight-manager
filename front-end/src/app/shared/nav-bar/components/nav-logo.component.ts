@@ -4,7 +4,7 @@ import { Component } from '@angular/core';
   selector: 'app-nav-logo',
   imports: [],
   template: `
-    <div class="flex items-center space-x-3">
+    <div class="z-50 flex items-center space-x-3">
       <svg 
         xmlns="http://www.w3.org/2000/svg" 
         viewBox="0 0 24 24" 

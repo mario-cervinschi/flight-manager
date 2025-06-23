@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { DropdownAirportsComponent } from './dropdown-airports.component';
 import { Airport } from '../../../../../model/airport';
 import { GenericInputComponent } from './generic-input.component';
@@ -26,6 +26,12 @@ import { GenericInputComponent } from './generic-input.component';
   styles: ``,
 })
 export class AirportInputComponent {
+  @ViewChild(GenericInputComponent) genericInputComponent!: GenericInputComponent;
+
+  focus(){
+    this.genericInputComponent?.focusInput();
+  }
+
   @Input() inputLabel: string = '';
   @Input() airports: Airport[] = [];
 
@@ -49,6 +55,10 @@ export class AirportInputComponent {
     this.currentAirport = airport;
     this.showAirportDropdown = false;
     this.selectedAirport.emit(airport);
+  }
+
+  setCurrentAirport(airport: Airport | null){
+    this.currentAirport = airport;
   }
 
   onSearch(event: any) {

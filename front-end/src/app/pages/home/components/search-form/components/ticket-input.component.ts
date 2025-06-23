@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { GenericInputComponent } from './generic-input.component';
 import { DropdownTicketComponent } from './dropdown-ticket.component';
 import { TicketCounter } from '../../../../../model/ticket_counter';
@@ -20,6 +20,12 @@ import { TicketCounter } from '../../../../../model/ticket_counter';
   styles: ``,
 })
 export class TicketInputComponent {
+  @ViewChild(GenericInputComponent) genericInputComponent!: GenericInputComponent;
+
+  focus(){
+    this.genericInputComponent?.focusInput();
+  }
+  
   @Input() inputLabel: string = 'NaN';
 
   @Output() peopleNumberChanged = new EventEmitter<TicketCounter>(); 
@@ -34,8 +40,5 @@ export class TicketInputComponent {
 
   activeDropdown(value: boolean) {
     this.showTicketDropdown = !value;
-    // if(this.searchWords.length === 0){
-    //   this.filteredAirports = this.airports;
-    // }
   }
 }

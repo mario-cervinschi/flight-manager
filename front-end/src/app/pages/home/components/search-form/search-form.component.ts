@@ -25,104 +25,27 @@ import { TicketCounter } from '../../../../model/ticket_counter';
   styleUrl: './search-form.component.css',
 })
 export class SearchFormComponent {
+  @ViewChild('departureInput') departureInput!: AirportInputComponent;
+  @ViewChild('destinationInput') destinationInput!: AirportInputComponent;
+  @ViewChild('departureDateInput') departureDateInput!: CalendarInputComponent;
+  @ViewChild('ticketInput') ticketInput!: TicketInputComponent;
+
   fg = new FormGroup({
     destinationForm: new FormControl(''),
     departureForm: new FormControl('', Validators.required),
     departureDateForm: new FormControl('', Validators.required),
     returnDateForm: new FormControl(''),
-    ticketsForm: new FormControl({ adults: 0, children: 0, infants: 0 }, Validators.required),
+    ticketsForm: new FormControl(
+      { adults: 0, children: 0, infants: 0 },
+      Validators.required
+    ),
   });
 
-  airports: Airport[] = [
-    {
-      code: 'OTP',
-      name: 'Henri Coandă International Airport',
-      city: 'București',
-      country: 'Romania',
-    },
-    {
-      code: 'CLJ',
-      name: 'Cluj-Napoca International Airport',
-      city: 'Cluj-Napoca',
-      country: 'Romania',
-    },
-    {
-      code: 'TSR',
-      name: 'Timișoara Traian Vuia International Airport',
-      city: 'Timișoara',
-      country: 'Romania',
-    },
-    {
-      code: 'IAS',
-      name: 'Iași International Airport',
-      city: 'Iași',
-      country: 'Romania',
-    },
-    {
-      code: 'CND',
-      name: 'Mihail Kogălniceanu International Airport',
-      city: 'Constanța',
-      country: 'Romania',
-    },
-    {
-      code: 'CDG',
-      name: 'Charles de Gaulle Airport',
-      city: 'Paris',
-      country: 'Franta',
-    },
-    {
-      code: 'LHR',
-      name: 'Heathrow Airport',
-      city: 'London',
-      country: 'Marea Britanie',
-    },
-    {
-      code: 'FCO',
-      name: 'Leonardo da Vinci Airport',
-      city: 'Roma',
-      country: 'Italia',
-    },
-    {
-      code: 'BCN',
-      name: 'Barcelona-El Prat Airport',
-      city: 'Barcelona',
-      country: 'Spania',
-    },
-    {
-      code: 'AMS',
-      name: 'Amsterdam Airport Schiphol',
-      city: 'Amsterdam',
-      country: 'Olanda',
-    },
-    {
-      code: 'FRA',
-      name: 'Frankfurt Airport',
-      city: 'Frankfurt',
-      country: 'Germania',
-    },
-    {
-      code: 'MUC',
-      name: 'Munich Airport',
-      city: 'München',
-      country: 'Germania',
-    },
-    {
-      code: 'VIE',
-      name: 'Vienna International Airport',
-      city: 'Viena',
-      country: 'Austria',
-    },
-    { code: 'ZUR', name: 'Zurich Airport', city: 'Zurich', country: 'Elvetia' },
-    {
-      code: 'IST',
-      name: 'Istanbul Airport',
-      city: 'Istanbul',
-      country: 'Turcia',
-    },
-  ];
-
+  airports: Airport[] = [];
   destinationAirports: Airport[] = [];
-  dates: CalendarDay[] = [];
+  
+  datesGoTo: CalendarDay[] = [];
+  datesReturn: CalendarDay[] = [];
 
   selectedDestination: Airport | null = null;
   selectedDeparture: Airport | null = null;
@@ -134,13 +57,38 @@ export class SearchFormComponent {
 
   isLoadingDestinations = false;
 
-  ticketOptions = [1, 2, 3, 4, 5, 6, 7, 8, 9];
-
   constructor(private service: ServicesService) {
-    this.dates = this.service.generateMockDates(
-      new Date().getFullYear(),
-      new Date().getMonth() + 1
-    );
+    this.getAllAirports();
+  }
+
+  private async getAllAirports() {
+    try {
+      this.airports = await this.service.getAllAirpots();
+    } catch (error) {
+      console.error('Error on loading airports: ', error);
+    }
+  }
+
+  async getNewDatesGoTo(event: { month: number; year: number }) {
+    if (this.selectedDeparture && this.selectedDestination) {
+      this.datesGoTo = await this.service.getTravelDays(
+        this.selectedDeparture,
+        this.selectedDestination,
+        event.year,
+        event.month
+      );
+    }
+  }
+
+  async getNewDatesReturn(event: { month: number; year: number }) {
+    if (this.selectedDeparture && this.selectedDestination) {
+      this.datesReturn = await this.service.getTravelDays(
+        this.selectedDestination,
+        this.selectedDeparture,
+        event.year,
+        event.month
+      );
+    }
   }
 
   async selectDeparture(airport: Airport | null) {
@@ -156,6 +104,18 @@ export class SearchFormComponent {
 
     if (airport) {
       await this.loadDestinationAirports(airport.code);
+      if (this.selectedDestination) {
+        const now = new Date();
+        await this.getNewDatesGoTo({
+          year: now.getFullYear(),
+          month: now.getMonth() + 1,
+        });
+        await this.getNewDatesReturn({
+          year: now.getFullYear(),
+          month: now.getMonth() + 1,
+        });
+      }
+      setTimeout(() => this.destinationInput?.focus(), 0);
     } else {
       this.destinationAirports = [];
     }
@@ -181,16 +141,53 @@ export class SearchFormComponent {
     this.selectedTicketNumbers = event;
   }
 
-  getNewDates(event: { year: number; month: number }) {
-    this.dates = this.service.generateMockDates(event.year, event.month);
-  }
-
-  selectDestination(airport: Airport | null) {
+  async selectDestination(airport: Airport | null) {
     this.selectedDestination = airport;
     this.fg.patchValue({ destinationForm: airport ? airport.code : '' });
+
+    if (airport && this.selectedDeparture) {
+      const now = new Date();
+      await this.getNewDatesGoTo({
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+      });
+      await this.getNewDatesReturn({
+        year: now.getFullYear(),
+        month: now.getMonth() + 1,
+      });
+    }
+
+    setTimeout(() => this.departureDateInput?.focus(), 0);
   }
 
   @ViewChild('returnDateInput') returnDateInput!: CalendarInputComponent;
+
+  swapAirports() {
+    const temp = this.selectedDeparture;
+    this.selectedDeparture = this.selectedDestination;
+    this.selectedDestination = temp;
+
+    this.fg.patchValue({
+      departureForm: this.selectedDeparture ? this.selectedDeparture.code : '',
+      destinationForm: this.selectedDestination
+        ? this.selectedDestination.code
+        : '',
+      departureDateForm: '',
+      returnDateForm: '',
+    });
+
+    this.departureInput.setCurrentAirport(this.selectedDeparture);
+    this.destinationInput.setCurrentAirport(this.selectedDestination);
+
+    if (this.selectedDeparture) {
+      this.loadDestinationAirports(this.selectedDeparture.code);
+    } else {
+      this.destinationAirports = [];
+    }
+
+    this.departureDateInput?.clearSelectedDate?.();
+    this.returnDateInput?.clearSelectedDate?.();
+  }
 
   selectDepartureDate(departureDate: Date | null) {
     this.selectedDepartureDate = departureDate;
@@ -205,6 +202,7 @@ export class SearchFormComponent {
       });
       this.returnDateInput.clearSelectedDate();
     }
+    setTimeout(() => this.returnDateInput?.focus(), 0);
   }
 
   selectReturnDate(returnDate: Date | null) {
@@ -212,6 +210,7 @@ export class SearchFormComponent {
     this.fg.patchValue({
       returnDateForm: returnDate ? returnDate.toISOString() : '',
     });
+    setTimeout(() => this.ticketInput?.focus(), 0);
   }
 
   retrieveFormData(): FormGroup | null {

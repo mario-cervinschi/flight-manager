@@ -13,7 +13,7 @@ import { NgClass } from '@angular/common';
   selector: 'app-dropdown-calendar',
   imports: [NgClass],
   template:`@if (showDropdown) {
-    <div class="absolute z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto" (mousedown)="onMouseDown($event)">
+    <div class="absolute w-[350px] min-w-full z-50 left-0 right-0 mt-1 bg-white border border-gray-300 rounded-md shadow-lg overflow-y-auto" (mousedown)="onMouseDown($event)">
       <div
         class="flex items-center justify-between mb-4 bg-custom-nav-via/80 text-white/80 select-none"
       >

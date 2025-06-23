@@ -7,7 +7,7 @@ import { TicketCounter } from '../../../../../model/ticket_counter';
   template: `
     @if (showDropdown) {
     <div
-      class="absolute z-50 w-[150%] mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
+      class="absolute z-50 w-[300px] min-w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto"
       (mousedown)="onMouseDown($event)"
     >
       <div class="flex justify-between px-6 py-2">

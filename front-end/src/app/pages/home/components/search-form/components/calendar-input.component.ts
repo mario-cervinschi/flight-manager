@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { GenericInputComponent } from './generic-input.component';
 import { DropdownCalendarComponent } from './dropdown-calendar.component';
 import { CalendarDay } from '../../../../../model/calendar_day';
@@ -23,6 +23,12 @@ import { Airport } from '../../../../../model/airport';
   styles: ``,
 })
 export class CalendarInputComponent {
+  @ViewChild(GenericInputComponent) genericInputComponent!: GenericInputComponent;
+
+  focus(){
+    this.genericInputComponent?.focusInput();
+  }
+  
   @Input() inputLabel: string = 'NaN';
   @Input() dates: CalendarDay[] = [];
   @Input() selectedDepartureAirport: Airport | null = null;
