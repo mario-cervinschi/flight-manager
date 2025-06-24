@@ -9,8 +9,19 @@ dependencyManagement {
     }
 }
 
+def lombokVersion = '1.18.38'
+
 dependencies {
     implementation project(':model')
+    implementation project(':repository')
+
+    compileOnly "org.projectlombok:lombok:$lombokVersion"
+    annotationProcessor "org.projectlombok:lombok:$lombokVersion"
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.5.0'
+
+    testCompileOnly "org.projectlombok:lombok:$lombokVersion"
+    testAnnotationProcessor "org.projectlombok:lombok:$lombokVersion"
 
     implementation 'org.springframework:spring-context'
     implementation 'org.springframework:spring-web'

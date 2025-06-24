@@ -6,26 +6,24 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
-import java.time.LocalTime;
-
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Flight {
+public class Route {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
 
     @ManyToOne
-    private Airport departure;
+    @JoinColumn(name = "origin_airport_code", nullable = false)
+    private Airport originAirport;
 
     @ManyToOne
-    private Airport destination;
+    @JoinColumn(name = "destination_airport_code", nullable = false)
+    private Airport destinationAirport;
 
-    private LocalDate date;
-    private LocalTime departureTime;
-    private Double price;
+    private Integer duration;
+
 }
