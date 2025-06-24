@@ -3,6 +3,7 @@
 ![Java](https://img.shields.io/badge/Java-17+-ED8B00?style=flat-square&logo=openjdk&logoColor=white)
 ![Spring Boot](https://img.shields.io/badge/Spring%20Boot-6DB33F?style=flat-square&logo=spring&logoColor=white)
 ![Angular](https://img.shields.io/badge/Angular-19-DD0031?style=flat-square&logo=angular&logoColor=white)
+![Tailwind CSS](https://img.shields.io/badge/Tailwind%20CSS-38B2AC?style=flat-square&logo=tailwind-css&logoColor=white)
 ![PostgreSQL](https://img.shields.io/badge/PostgreSQL-316192?style=flat-square&logo=postgresql&logoColor=white)
 ![Gradle](https://img.shields.io/badge/Gradle-02303A?style=flat-square&logo=gradle&logoColor=white)
 
@@ -10,16 +11,17 @@ A flight management system that enables efficient flight management and ticket s
 
 ## 📋 Description
 
-Flight Manager is a full-stack web application developed to facilitate flight management. The application provides an intuitive interface for viewing, adding, modifying, and deleting flights, with expansion plans for a complete booking system and user management.
+Flight Manager is a full-stack web application developed to facilitate flight management. The application provides an intuitive interface for searching through existing routes with expansion plans for a complete booking system and user management.
 
 ## 🖼️ Screenshots
 
 <div align="center">
-  <img src="https://github.com/user-attachments/assets/cdc649b2-4502-4371-8fb6-cb9982e17dc5" alt="Flight List View" width="400" height="250" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
-  <img src="https://github.com/user-attachments/assets/9a0df484-3201-4dac-a213-b13e6420a7d0" alt="Add Flight Form" width="400" height="250" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/56e77ec2-b2af-4a17-be4f-aa4c82fbfb41" alt="Flight Search Form" width="500" height="229" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/a229df02-2ba1-4c73-87ae-30f2653b30fd" alt="Custom Calendar" width="500" height="229" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/8121cced-c472-4f7c-9bff-32b3d3be89d1" alt="Custom Calendar" width="250" height="541" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
+  <img src="https://github.com/user-attachments/assets/8671c851-601f-460f-8a3f-abd9bdc20001" alt="Custom Calendar" width="250" height="505" style="border-radius: 8px; object-fit: cover; margin: 5px;" />
 </div>
 <div align="center">
-  
 </div>
 
 ## 🚀 Features
@@ -55,6 +57,7 @@ flight-manager/
 ### Frontend
 - **Framework**: Angular 19
 - **Language**: TypeScript
+- **Styling**: Tailwind CSS
 
 ## 📦 Installation & Setup
 
@@ -109,6 +112,14 @@ The frontend application will be available at `http://localhost:4200`
 1. Create a PostgreSQL database named `flight_manager`
 2. The application will automatically create the necessary tables on first run
 
+## 🎨 Styling
+
+The frontend uses **Tailwind CSS** for utility-first styling, providing:
+- Responsive design out of the box
+- Consistent color palette and spacing
+- Fast development with utility classes
+- Modern, clean UI components
+
 ## 🔧 API Endpoints
 
 ### Flights
@@ -124,6 +135,7 @@ The frontend application will be available at `http://localhost:4200`
 - [x] Basic CRUD operations for flights
 - [x] RESTful API implementation
 - [x] Angular frontend interface
+- [x] Tailwind CSS integration
 
 ### Phase 2 (Next)
 - [ ] Ticket booking system
