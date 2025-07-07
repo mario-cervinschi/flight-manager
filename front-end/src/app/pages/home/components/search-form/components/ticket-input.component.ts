@@ -9,6 +9,7 @@ import { TicketCounter } from '../../../../../model/ticket_counter';
   template: `<app-generic-input
       [inputLabel]="inputLabel"
       [inputType]="'Ticket'"
+      [writeAccessible]="false"
       [currentObject]="currentTicketNumbers"
       (hideCurrentDropdown)="activeDropdown($event)"
     ></app-generic-input>

@@ -1,12 +1,30 @@
-import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import { DropdownAirportsComponent } from './dropdown-airports.component';
 import { Airport } from '../../../../../model/airport';
 import { GenericInputComponent } from './generic-input.component';
+import { AirportMapComponent } from './airport-map.component';
 
 @Component({
   selector: 'app-input-airports',
-  imports: [DropdownAirportsComponent, GenericInputComponent],
+  imports: [
+    DropdownAirportsComponent,
+    GenericInputComponent,
+    AirportMapComponent,
+  ],
   template: `
+    @if(showMap){
+    <app-airport-map
+      class="z-[9999]"
+      (closed)="shouldShowMap()"
+    ></app-airport-map>
+    }
+
     <!-- generic input -->
     <app-generic-input
       [inputLabel]="inputLabel"
@@ -20,20 +38,23 @@ import { GenericInputComponent } from './generic-input.component';
     <app-dropdown-airports
       [airports]="filteredAirports"
       [showDropdown]="showAirportDropdown"
+      (shouldShowMap)="shouldShowMap()"
       (selectedAirport)="select($event)"
     ></app-dropdown-airports>
   `,
   styles: ``,
 })
 export class AirportInputComponent {
-  @ViewChild(GenericInputComponent) genericInputComponent!: GenericInputComponent;
+  @ViewChild(GenericInputComponent)
+  genericInputComponent!: GenericInputComponent;
 
-  focus(){
+  focus() {
     this.genericInputComponent?.focusInput();
   }
 
   @Input() inputLabel: string = '';
   @Input() airports: Airport[] = [];
+  @Input() showMap: boolean = false;
 
   @Output() selectedAirport = new EventEmitter<Airport | null>();
   @Output() inputLabelChange = new EventEmitter<string>();
@@ -44,9 +65,20 @@ export class AirportInputComponent {
   filteredAirports: Airport[] = [];
   showAirportDropdown: boolean = false;
 
+  shouldShowMap() {
+    this.showMap = !this.showMap;
+    this.showAirportDropdown = !this.showAirportDropdown;
+
+    if (this.showMap) {
+      document.body.classList.add('overflow-hidden');
+    } else {
+      document.body.classList.remove('overflow-hidden');
+    }
+  }
+
   activeDropdown(value: boolean) {
     this.showAirportDropdown = !value;
-    if(this.searchWords.length === 0){
+    if (this.searchWords.length === 0) {
       this.filteredAirports = this.airports;
     }
   }
@@ -57,7 +89,7 @@ export class AirportInputComponent {
     this.selectedAirport.emit(airport);
   }
 
-  setCurrentAirport(airport: Airport | null){
+  setCurrentAirport(airport: Airport | null) {
     this.currentAirport = airport;
   }
 

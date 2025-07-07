@@ -24,6 +24,8 @@ import { Airport } from '../../../../../model/airport';
         [class.pb-1]="shouldShowLabel()"
         [class.py-3.5]="!shouldShowLabel()"
         [class.text-gray-400]="!currentObject"
+        [readOnly]="!writeAccessible"
+        [class.cursor-pointer]="!writeAccessible"
         (input)="onSearch($event)"
         (keydown)="onKeyDown($event)"
         (focus)="onFocus()"
@@ -50,6 +52,7 @@ export class GenericInputComponent {
   @Input() inputLabel: string = '';
   @Input() inputType: 'Airport' | 'Calendar' | 'Ticket' = 'Airport';
   @Input() currentObject: any = null;
+  @Input() writeAccessible: boolean = true;
 
   @Output() inputSearchTermChange = new EventEmitter<string>();
   @Output() hideCurrentDropdown = new EventEmitter<boolean>();
@@ -197,7 +200,6 @@ export class GenericInputComponent {
 
   onFocus() {
     this.hideCurrentDropdown.emit(false);
-    console.log('activated select');
   }
 
   onBlur() {
