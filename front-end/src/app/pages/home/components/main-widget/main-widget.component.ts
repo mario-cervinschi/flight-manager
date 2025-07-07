@@ -11,7 +11,7 @@ import { MobilePromotionMainWidgetComponent } from './mobile-promotion.component
     MobilePromotionMainWidgetComponent,
   ],
   template: `
-    <div class="relative w-full min-h-screen overflow-hidden">
+    <div class="relative w-full min-h-screen overflow-visible">
       <div class="absolute inset-0 z-0">
         <img
           src="main_widget_background.png"

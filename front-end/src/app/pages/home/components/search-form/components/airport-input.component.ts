@@ -21,7 +21,9 @@ import { AirportMapComponent } from './airport-map.component';
     @if(showMap){
     <app-airport-map
       class="z-[9999]"
+      [airports]="filteredAirports"
       (closed)="shouldShowMap()"
+      (selectedAirport)="select($event)"
     ></app-airport-map>
     }
 
@@ -67,7 +69,7 @@ export class AirportInputComponent {
 
   shouldShowMap() {
     this.showMap = !this.showMap;
-    this.showAirportDropdown = !this.showAirportDropdown;
+    this.showAirportDropdown = false;
 
     if (this.showMap) {
       document.body.classList.add('overflow-hidden');

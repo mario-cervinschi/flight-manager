@@ -14,23 +14,39 @@ import { Airport } from '../../../../../model/airport';
     </label>
 
     <div class="relative">
-      <input
-        #inputElement
-        type="text"
-        class="w-full px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50 transition-all placeholder-custom-nav-primary/50 text-custom-nav-via/90 font-semibold text-lg"
-        [placeholder]="getPlaceholder()"
-        [value]="getInputValue()"
-        [class.pt-5]="shouldShowLabel()"
-        [class.pb-1]="shouldShowLabel()"
-        [class.py-3.5]="!shouldShowLabel()"
-        [class.text-gray-400]="!currentObject"
-        [readOnly]="!writeAccessible"
-        [class.cursor-pointer]="!writeAccessible"
-        (input)="onSearch($event)"
-        (keydown)="onKeyDown($event)"
-        (focus)="onFocus()"
-        (blur)="onBlur()"
-      />
+      @if (writeAccessible) {
+        <!-- Input real când este editabil -->
+        <input
+          #inputElement
+          type="text"
+          class="w-full px-4 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-gray-50 transition-all placeholder-custom-nav-primary/50 text-custom-nav-via/90 font-semibold text-lg"
+          [placeholder]="getPlaceholder()"
+          [value]="getInputValue()"
+          [class.pt-5]="shouldShowLabel()"
+          [class.pb-1]="shouldShowLabel()"
+          [class.py-3.5]="!shouldShowLabel()"
+          [class.text-gray-400]="!currentObject"
+          (input)="onSearch($event)"
+          (keydown)="onKeyDown($event)"
+          (focus)="onFocus()"
+          (blur)="onBlur()"
+        />
+      } @else {
+        <!-- Div fake când nu este editabil -->
+        <div
+          #inputElement
+          class="w-full px-4 border border-gray-300 rounded-md shadow-sm bg-gray-50 transition-all text-custom-nav-via/90 font-semibold text-lg cursor-pointer"
+          [class.pt-5]="shouldShowLabel()"
+          [class.pb-1]="shouldShowLabel()"
+          [class.py-3.5]="!shouldShowLabel()"
+          [class.text-gray-400]="!currentObject"
+          (click)="onFocus()"
+          (blur)="onBlur()"
+          tabindex="0"
+        >
+          {{ getInputValue() || getPlaceholder() }}
+        </div>
+      }
 
       <div
         class="absolute top-0.5 right-2 text-end text-xs font-medium text-custom-nav-via/60 pb-1 select-none pointer-events-none transition-all duration-100"
@@ -43,10 +59,14 @@ import { Airport } from '../../../../../model/airport';
   styles: ``,
 })
 export class GenericInputComponent {
-  @ViewChild('inputElement') inputElemetRef!: ElementRef<HTMLInputElement>;
+  @ViewChild('inputElement') inputElemetRef!: ElementRef<HTMLInputElement | HTMLDivElement>;
 
   focusInput(){
-    this.inputElemetRef?.nativeElement?.focus();
+    if (this.writeAccessible) {
+      (this.inputElemetRef?.nativeElement as HTMLInputElement)?.focus();
+    } else {
+      this.onFocus();
+    }
   }
 
   @Input() inputLabel: string = '';
@@ -171,6 +191,9 @@ export class GenericInputComponent {
   }
 
   onKeyDown(event: KeyboardEvent) {
+    // Doar pentru input-ul real, nu pentru div
+    if (!this.writeAccessible) return;
+
     const isPrintableKey = event.key.length === 1;
     const isDeletionKey = event.key === 'Backspace' || event.key === 'Delete';
 
@@ -203,11 +226,9 @@ export class GenericInputComponent {
   }
 
   onBlur() {
-    setTimeout(() => {
-      this.hideCurrentDropdown.emit(true);
+    this.hideCurrentDropdown.emit(true);
       if (!this.currentObject && !this.searchTerm) {
         this.searchTerm = '';
       }
-    }, 25);
   }
 }

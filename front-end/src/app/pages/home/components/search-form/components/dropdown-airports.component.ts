@@ -19,7 +19,7 @@ import {
       <div
         class="z-50 sticky top-0 bg-emerald-700 hover:bg-emerald-800 text-center py-2 rounded-md text-slate-50 hover:cursor-pointer w-full"
         (mousedown)="onClickShowMapButton()"
-      >
+        >
         Show on map
       </div>
 
