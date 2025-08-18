@@ -13,7 +13,7 @@ export interface NavPage {
   imports: [TopNavComponent, BottomNavComponent, MobileMenuOverlayComponent],
   template: `
     <app-top-nav
-      class="z-50"
+      class="z-10"
       [navPages]="navPages"
       [isMobileMenuOpen]="isMobileMenuOpen"
       (toggleMenu)="toggleMobileMenu()"
@@ -22,14 +22,14 @@ export interface NavPage {
     </app-top-nav>
 
     <app-bottom-nav
-      class="z-50"
+      class="z-10"
       [isMobileMenuOpen]="isMobileMenuOpen"
       (toggleMenu)="toggleMobileMenu()"
     >
     </app-bottom-nav>
 
     <app-mobile-menu-overlay
-      class="z-50"
+      class="z-10 "
       [navPages]="navPages"
       [isMobileMenuOpen]="isMobileMenuOpen"
       (closeMenu)="closeMobileMenu()"
@@ -43,9 +43,7 @@ export class NavBarComponent {
     { page: 'Home', url: '/' },
     { page: 'Flights', url: '/flights' },
     { page: 'Test1', url: '/flights' },
-    { page: 'Test2', url: '/flights' },
-    { page: 'Test3', url: '/flights' },
-    { page: 'Test4', url: '/flights' },
+    { page: 'Test2', url: '/flights' }
   ];
 
   isMobileMenuOpen = false;

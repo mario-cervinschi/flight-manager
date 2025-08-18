@@ -100,6 +100,8 @@ export class SearchFormComponent {
       this.fg.patchValue({
         destinationForm: '',
       });
+
+      this.destinationInput.setCurrentAirport(null);
     }
 
     if (airport) {

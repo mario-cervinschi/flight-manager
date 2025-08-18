@@ -10,13 +10,22 @@ import {
   imports: [],
   template: `
     @if (showDropdown) {
+
     <div
       class="custom-scrollbar absolute z-50 w-[130%] max-w-[300px] min-w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto select-none"
       (mousedown)="onMouseDown($event)"
     >
-      @for (group of groupedAirports; track group.country) {
+      @if(groupedAirports.length > 0){
+      <div
+        class="z-50 sticky top-0 bg-emerald-700 hover:bg-emerald-800 text-center py-2 rounded-md text-slate-50 hover:cursor-pointer w-full"
+        (mousedown)="onClickShowMapButton()"
+        >
+        Show on map
+      </div>
+
+      } @for (group of groupedAirports; track group.country) {
       <!-- Country name -->
-      <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 sticky">
+      <div class="px-3 py-2 bg-gray-100 border-b border-gray-200 sticky top-10">
         <div class="font-bold text-gray-700 text-sm uppercase tracking-wide">
           {{ group.country }}
         </div>
@@ -57,9 +66,14 @@ export class DropdownAirportsComponent {
   @Input() airports: Airport[] = [];
 
   @Output() selectedAirport = new EventEmitter<Airport>();
+  @Output() shouldShowMap = new EventEmitter<boolean>();
 
   get groupedAirports(): GroupedAirports[] {
     return groupAirportsByCountry(this.airports);
+  }
+
+  onClickShowMapButton() {
+    this.shouldShowMap.emit();
   }
 
   onMouseDown(event: MouseEvent) {

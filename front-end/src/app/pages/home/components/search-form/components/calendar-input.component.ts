@@ -11,6 +11,7 @@ import { Airport } from '../../../../../model/airport';
       [inputLabel]="inputLabel"
       [inputType]="'Calendar'"
       [currentObject]="selectedDate"
+      [writeAccessible]="false"
       (hideCurrentDropdown)="activeDropdown($event)"
     ></app-generic-input>
 

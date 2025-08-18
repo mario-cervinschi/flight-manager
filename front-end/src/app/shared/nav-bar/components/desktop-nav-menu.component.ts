@@ -31,7 +31,7 @@ import { NavPage } from '../nav-bar.component';
               <span class="absolute -bottom-1 left-0 w-0 h-0.5 bg-white transition-all duration-300 group-hover:w-full"></span>
             </button>
 
-            <div class="absolute right-0 mt-2 w-40 bg-emerald-950 rounded-lg shadow-xl border border-slate-900/70 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-50">
+            <div class="absolute right-0 mt-2 w-40 bg-emerald-950 rounded-lg shadow-xl border border-slate-900/70 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-300 transform translate-y-2 group-hover:translate-y-0 z-10">
               <ul class="py-2">
                 @for (item of additionalPages; track $index) {
                   <li>

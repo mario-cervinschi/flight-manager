@@ -11,7 +11,7 @@ import { MobilePromotionMainWidgetComponent } from './mobile-promotion.component
     MobilePromotionMainWidgetComponent,
   ],
   template: `
-    <div class="relative w-full min-h-screen overflow-hidden">
+    <div class="relative w-full min-h-screen overflow-visible">
       <div class="absolute inset-0 z-0">
         <img
           src="main_widget_background.png"
@@ -20,7 +20,7 @@ import { MobilePromotionMainWidgetComponent } from './mobile-promotion.component
         />
       </div>
 
-      <div class="relative z-10 lg:px-28 sm:pt-12 pt-0 px-2">
+      <div class="relative lg:px-28 sm:pt-12 pt-0 px-2">
         <app-mobile-promotion-main-widget></app-mobile-promotion-main-widget>
         <app-search-form></app-search-form>
         <app-desktop-promotion-main-widget></app-desktop-promotion-main-widget>

@@ -5,6 +5,7 @@ import com.flightapp.model.Flight;
 import com.flightapp.model.Route;
 import com.flightapp.repository.IFlightRepository;
 import com.flightapp.repository.IRouteRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
@@ -20,13 +21,13 @@ public class ScheduledFlightGenerator {
     private final IFlightRepository flightRepository;
     private final IRouteRepository routeRepository;
 
-    @Scheduled(cron = "0 0 * * * *") // rulează în fiecare oră fixă
+    @Scheduled(cron = "0 0 0 * * *")
+    @Transactional
     public void checkAndGenerateFlights() {
         System.out.println("checked for generation\n");
         LocalDate today = LocalDate.now();
         System.out.println("today: " + today);
 
-        // Șterge toate zborurile care au dată anterioară zilei de azi
         flightRepository.deleteByDateBefore(today);
 
         LocalDate lastGeneratedDate = flightRepository.findTopByOrderByDateDesc()
@@ -52,7 +53,6 @@ public class ScheduledFlightGenerator {
         for (LocalDate date = start; !date.isAfter(end); date = date.plusDays(1)) {
             DayOfWeek dow = date.getDayOfWeek();
 
-            // Ex: doar marți și joi
             if (dow == DayOfWeek.TUESDAY || dow == DayOfWeek.THURSDAY) {
                 boolean exists = flightRepository.existsByDepartureAndDestinationAndDate(from, to, date);
                 if (!exists) {
