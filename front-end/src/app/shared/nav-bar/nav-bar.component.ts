@@ -29,7 +29,7 @@ export interface NavPage {
     </app-bottom-nav>
 
     <app-mobile-menu-overlay
-      class="z-10"
+      class="z-10 "
       [navPages]="navPages"
       [isMobileMenuOpen]="isMobileMenuOpen"
       (closeMenu)="closeMobileMenu()"
@@ -43,9 +43,7 @@ export class NavBarComponent {
     { page: 'Home', url: '/' },
     { page: 'Flights', url: '/flights' },
     { page: 'Test1', url: '/flights' },
-    { page: 'Test2', url: '/flights' },
-    { page: 'Test3', url: '/flights' },
-    { page: 'Test4', url: '/flights' },
+    { page: 'Test2', url: '/flights' }
   ];
 
   isMobileMenuOpen = false;

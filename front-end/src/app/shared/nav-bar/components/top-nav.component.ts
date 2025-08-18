@@ -5,6 +5,7 @@ import { NavLogoComponent } from './nav-logo.component';
 import { DesktopNavMenuComponent } from './desktop-nav-menu.component';
 import { MobileMenuButtonComponent } from './mobile-menu-button.component';
 import { MediumScreenMenuComponent } from './medium-screen-menu.component';
+import { UserMenuComponent } from './user-menu.component';
 
 @Component({
   selector: 'app-top-nav',
@@ -13,7 +14,8 @@ import { MediumScreenMenuComponent } from './medium-screen-menu.component';
     NavLogoComponent, 
     DesktopNavMenuComponent, 
     MobileMenuButtonComponent,
-    MediumScreenMenuComponent
+    MediumScreenMenuComponent,
+    UserMenuComponent
   ],
   template: `
     <!-- Top nav bar -->
@@ -23,18 +25,15 @@ import { MediumScreenMenuComponent } from './medium-screen-menu.component';
         
         <app-nav-logo></app-nav-logo>
 
-        <!-- Large screen navigation -->
-        <app-desktop-nav-menu 
-          [navPages]="navPages"
-          class="hidden lg:block">
-        </app-desktop-nav-menu>
-
-        <!-- Burger button for medium screen devices -->
-        <app-mobile-menu-button
-          [isMobileMenuOpen]="isMobileMenuOpen"
-          (toggleMenu)="onToggleMenu()"
-          class="hidden sm:block lg:hidden">
-        </app-mobile-menu-button>
+        <div class="hidden sm:flex items-center space-x-4">
+        <app-desktop-nav-menu class="hidden lg:flex items-center space-x-8" [navPages]="navPages"></app-desktop-nav-menu>
+        <app-user-menu></app-user-menu>
+          <app-mobile-menu-button
+            [isMobileMenuOpen]="isMobileMenuOpen"
+            (toggleMenu)="onToggleMenu()"
+            class="lg:hidden">
+          </app-mobile-menu-button>
+        </div>
       </div>
 
       <!-- Medium screen dropdown menu -->
